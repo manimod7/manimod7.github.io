@@ -220,7 +220,7 @@ footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-
 [hidden]{display:none!important}
 img{max-width:100%}
 
-.roy{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px}
+.roy{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
 .roy .card{display:flex;flex-direction:column;gap:14px}
 .roy h3{font-weight:800;font-size:clamp(22px,2.6vw,30px);letter-spacing:-.02em;line-height:1.15}
 .roy p{color:var(--muted);font-size:15px}
@@ -312,7 +312,7 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
       <div class="label"><span>About</span></div>
       <h2>Backend engineer for places where the numbers have to be right.</h2>
       <p>At PayPal I worked on the <b>Payments Platform</b>, the system of record for global payments data, including integrating <b>Venmo and Braintree</b> into it and building the technology that opened new revenue streams.</p>
-      <p>At Amazon I work on financial record-keeping for digital products. I built the <b>Royalties Reporting Dashboard</b>, which reconciles every royalty (eBooks, music, Audible, Kindle and more) from ledger booking to actual payment across all marketplaces. I also build the systems that track digital payments from order to closed books and flag anything that does not add up.</p>
+      <p>At Amazon I work on financial record-keeping for digital products. I built the <b>Royalties Reporting Dashboard</b> and the systems that track digital payments from order to closed books, flagging anything that does not add up.</p>
       <div class="tagrow"><span class="tag">Java</span><span class="tag">Distributed systems</span><span class="tag">Payments</span><span class="tag">Reconciliation</span><span class="tag">AWS data pipelines</span><span class="tag">LLM tooling</span></div>
     </section>
 
@@ -370,14 +370,7 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
         </div>
       </article>
       <article class="card">
-        <div class="label" style="margin:0"><span>Scale</span></div>
-        <div class="facts">
-          <div><b>Millions</b><span>of transactions across all marketplaces and businesses</span></div>
-          <div><b>Every royalty</b><span>eBooks, music, Audible, Kindle and more</span></div>
-          <div><b>Distributed</b><span>high-scale, asynchronous systems</span></div>
-          <div><b>Full lifecycle</b><span>ledger booking through to actual payment</span></div>
-        </div>
-        <div class="label" style="margin:6px 0 0"><span>Built with</span></div>
+        <div class="label" style="margin:0"><span>Built with</span></div>
         <div class="chips"><span class="core">S3 + Iceberg</span><span class="core">Glue</span><span class="core">Airflow</span><span class="core">Redshift</span><span class="core">DynamoDB</span><span class="core">OpenSearch</span><span class="core">QuickSight</span></div>
       </article>
     </div>
@@ -396,7 +389,7 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
         <div class="panel" role="tabpanel" id="p0" aria-labelledby="t0">
           <h3>Amazon</h3><p class="sub">Software Development Engineer II · Digital Acceleration · Financial Record Keeping for Digital Products</p>
           <ul style="margin-top:22px">
-            <li>Built the <b>Royalties Reporting Dashboard</b>, which reconciles and reports the full booking and payment lifecycle of royalties (eBooks, music subscriptions, Audible, Kindle and more) across all Amazon marketplaces and businesses. It runs on high-scale, distributed, asynchronous systems that process millions of transactions.</li>
+            <li>Built the <b>Royalties Reporting Dashboard</b>, the reconciliation and reporting layer for royalties across Amazon, built on high-scale, distributed, asynchronous systems (see Featured work).</li>
             <li>Onboarded new businesses (Alexa Plus, Amazon Photos, Eero, Alexa Protect) to <b>Amazon's standard accounting and booking systems</b>, customizing revenue booking for each business so month-end close stays accurate across digital product lines.</li>
             <li>Built an <b>automated reconciliation system</b> for third-party (in-app purchase) payments that ingests monthly Apple financial reports and generates <b>unit, FX and price adjustments</b>, resolving discrepancies in quantity, FX rates, pricing and commissions for Audible and other Amazon businesses.</li>
             <li>Engineered <b>adjustment pipelines</b> aligning Amazon's internal revenue records with Apple's settlement data, handling spot versus month-end FX conversions and unit-level mismatches at scale.</li>
@@ -442,10 +435,8 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
         <div class="label" style="margin:0"><span>Amazon</span></div>
         <h3>Reconciliation and record-keeping at scale</h3>
         <div class="facts">
-          <div><b>Millions</b><span>of royalty transactions reconciled from booking to payment</span></div>
-          <div><b>4 businesses</b><span>onboarded to Amazon's standard booking systems</span></div>
+                    <div><b>4 businesses</b><span>onboarded to Amazon's standard booking systems: Alexa Plus, Amazon Photos, Eero and Alexa Protect</span></div>
           <div><b>3 adjustment types</b><span>automated for in-app purchases: unit, FX and price</span></div>
-          <div><b>All marketplaces</b><span>covered by royalty reporting</span></div>
         </div>
         <div class="bars">
           <div class="bar"><div class="t">Customs data processing time, reduced <span class="note">(Brexit tooling, 2022 internship)</span></div><div class="track"><div class="fill" style="--w:40%"></div></div><div class="v num">−40%</div></div>
@@ -549,8 +540,8 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
   <section class="sec" id="recognition" data-sec>
     <div class="sec-h"><h2>Recognition &amp; education</h2><span>Amazon 2026 · PayPal 2022 – 2025</span></div>
     <div class="rec">
-      <div class="card"><h4>Top Performer</h4><div class="org">AMAZON · 2026</div><p>Recognized as a top performer for 2026 for work on financial record-keeping and royalty reconciliation across digital businesses.</p></div>
-      <div class="card"><h4>Props Award</h4><div class="org">PAYPAL</div><p>Architected a config-driven payment system with six nines availability and low-code deployments.</p></div>
+      <div class="card"><h4>Top Performer</h4><div class="org">AMAZON · 2026</div><p>Recognized as a top performer at Amazon for 2026.</p></div>
+      <div class="card"><h4>Props Award</h4><div class="org">PAYPAL</div><p>Recognized for architecting the config-driven payment system behind the Payments Platform.</p></div>
       <div class="card"><h4>Spot Award</h4><div class="org">PAYPAL</div><p>Spearheaded delivery of critical business initiatives that drove significant revenue growth.</p></div>
       <div class="card"><h4>Hackathon runner-up</h4><div class="org">PAYPAL</div><p>Designed a log-analysis tool that groups, analyzes and triages call logs and failures to speed up root-cause investigation.</p></div>
     </div>
