@@ -313,10 +313,10 @@ img{max-width:100%}
         <table>
           <thead><tr><th>Check</th><th>Amazon books</th><th>Partner report</th><th>Variance</th><th>Status</th></tr></thead>
           <tbody id="rows">
-            <tr data-v="-14" data-fmt="n"><td>Units sold</td><td>12,480</td><td>12,466</td><td class="var">0</td><td><span class="chip">Pending</span></td></tr>
-            <tr data-v="-70" data-fmt="m"><td>Gross revenue (EUR)</td><td>62,400.00</td><td>62,330.00</td><td class="var">0.00</td><td><span class="chip">Pending</span></td></tr>
-            <tr data-v="-10.50" data-fmt="m"><td>Commission (EUR)</td><td>9,360.00</td><td>9,349.50</td><td class="var">0.00</td><td><span class="chip">Pending</span></td></tr>
-            <tr class="total" id="tot"><td>Net to book (EUR)</td><td>53,040.00</td><td>52,980.50</td><td class="var" id="totv">0.00</td><td><span class="chip" id="totc">Pending</span></td></tr>
+            <tr data-v="-10" data-fmt="n"><td>Units sold</td><td>1,000</td><td>990</td><td class="var">—</td><td><span class="chip">Pending</span></td></tr>
+            <tr data-v="-100" data-fmt="m"><td>Gross revenue (EUR)</td><td>10,000.00</td><td>9,900.00</td><td class="var">—</td><td><span class="chip">Pending</span></td></tr>
+            <tr data-v="-10" data-fmt="m"><td>Commission (EUR)</td><td>1,000.00</td><td>990.00</td><td class="var">—</td><td><span class="chip">Pending</span></td></tr>
+            <tr class="total" id="tot"><td>Net to book (EUR)</td><td>9,000.00</td><td>8,910.00</td><td class="var" id="totv">—</td><td><span class="chip" id="totc">Pending</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -532,9 +532,11 @@ img{max-width:100%}
   function fmt(v,k){var a=Math.abs(v),s=k==='n'?String(a):a.toFixed(2);return (v<0?'−':v>0?'+':'')+s}
   var running=false,done=false;
   function wait(ms){return new Promise(function(r){setTimeout(r,ms)})}
+  var allRows=rows.concat([tot]);allRows.forEach(function(r){r.dataset.b=r.children[1].textContent});
   function reset(){
-    rows.forEach(function(r){r.className='';r.children[3].textContent=r.dataset.fmt==='n'?'0':'0.00';r.children[4].innerHTML='<span class="chip">Pending</span>'});
-    tot.className='total';totv.textContent='0.00';totc.textContent='Pending';totc.className='chip';
+    allRows.forEach(function(r){r.children[1].textContent=r.dataset.b});
+    rows.forEach(function(r){r.className='';r.children[3].textContent='—';r.children[4].innerHTML='<span class="chip">Pending</span>'});
+    tot.className='total';totv.textContent='—';totc.textContent='Pending';totc.className='chip';
   }
   btn.addEventListener('click',async function(){
     if(running)return;
@@ -546,15 +548,17 @@ img{max-width:100%}
       await wait(550);
       r.classList.add('bad');r.children[3].textContent=fmt(v,r.dataset.fmt);r.children[4].innerHTML='<span class="chip">Mismatch</span>';
     }
-    totv.textContent='−59.50';tot.classList.add('bad');totc.textContent='Mismatch';
-    msg.textContent='Variance found: 59.50 EUR. Generating adjustment booking…';
+    totv.textContent='−90.00';tot.classList.add('bad');totc.textContent='Mismatch';
+    msg.textContent='Variance found: 90.00 EUR. Generating adjustment booking…';
     await wait(900);
     for(var j=0;j<rows.length;j++){
       rows[j].classList.remove('bad');rows[j].classList.add('fixed');
+      rows[j].children[1].textContent=rows[j].children[2].textContent;
+      rows[j].children[3].textContent=rows[j].dataset.fmt==='n'?'0':'0.00';
       rows[j].children[4].innerHTML='<span class="chip">Adjusted</span>';
       await wait(300);
     }
-    tot.classList.remove('bad');tot.classList.add('ok');totv.textContent='0.00';totc.textContent='Reconciled';
+    tot.classList.remove('bad');tot.classList.add('ok');tot.children[1].textContent=tot.children[2].textContent;totv.textContent='0.00';totc.textContent='Reconciled';
     msg.textContent='Reconciled. Adjustment booked, variance 0.00 EUR, ready for close.';
     running=false;done=true;btn.disabled=false;btn.firstChild.nodeValue='Run again ';
   });
