@@ -241,6 +241,36 @@ img{max-width:100%}
 @media(max-width:860px){.imp{grid-template-columns:1fr}}
 @media(max-width:860px){.roy{grid-template-columns:1fr}}
 @media(max-width:520px){.flow{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* project details */
+.proj .card.click{cursor:pointer}
+.proj .card.click:focus-within{border-color:color-mix(in srgb,var(--accent) 55%,var(--line))}
+.proj .acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:4px}
+.btn{font:inherit;font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none;cursor:pointer;transition:transform .15s,border-color .15s}
+.btn:hover{transform:translateY(-1px);border-color:var(--muted)}
+.btn.main{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn small{font-family:var(--mono);font-size:12px;opacity:.75;font-weight:400}
+dialog.pd{border:1px solid var(--line);border-radius:22px;background:var(--surface);color:var(--ink);padding:0;width:min(760px,calc(100vw - 24px));max-height:min(88vh,860px);box-shadow:0 30px 80px -20px rgba(0,0,0,.5);overflow:hidden}
+dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
+.pd-in{display:flex;flex-direction:column;max-height:min(88vh,860px)}
+.pd-h{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:24px 26px 14px}
+.pd-h h3{font-weight:800;font-size:clamp(26px,4vw,34px);letter-spacing:-.025em;line-height:1.05;margin-top:6px}
+.pd-x{font:inherit;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;font-size:18px;line-height:1;flex:none}
+.pd-x:hover{border-color:var(--muted)}
+.pd-b{padding:0 26px 8px;overflow-y:auto;display:grid;gap:18px}
+.pd-b .lede2{font-size:16.5px;color:var(--ink);max-width:62ch}
+.pd-b h4{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500;margin:0 0 8px}
+.pd-b ul{display:grid;gap:7px}
+.pd-b li{position:relative;padding-left:18px;color:var(--muted);font-size:15px}
+.pd-b li::before{content:"";position:absolute;left:0;top:.72em;width:8px;height:2px;background:var(--accent)}
+.pd-b li b{color:var(--ink);font-weight:600}
+.pd-nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.pd-nums div{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--bg)}
+.pd-nums b{display:block;font-family:var(--display);font-variation-settings:'wdth' 112;font-weight:800;font-size:24px;letter-spacing:-.03em}
+.pd-nums span{font-size:12.5px;color:var(--muted)}
+.pd-note{font-size:13.5px;color:var(--muted);border-left:3px solid var(--accent);padding-left:12px}
+.pd-f{display:flex;flex-wrap:wrap;gap:8px;padding:16px 26px 22px;border-top:1px solid var(--line);margin-top:10px}
+@media(max-width:520px){.pd-h,.pd-b,.pd-f{padding-inline:18px}dialog.pd{border-radius:18px}}
 </style>
 </head>
 <body>
@@ -436,21 +466,74 @@ img{max-width:100%}
   </section>
 
   <section class="sec" id="projects" data-sec>
-    <div class="sec-h"><h2>Projects</h2><span>working prototypes · live links coming</span></div>
+    <div class="sec-h"><h2>Projects</h2><span>tap a project for details · live demos</span></div>
     <div class="proj">
-      <article class="card">
-        <div class="top"><div class="label" style="margin:0"><span>Cricket · data and ML</span></div><span class="st">PROTOTYPE</span></div>
+      <article class="card click" data-open="d-chase">
+        <div class="top"><div class="label" style="margin:0"><span>Cricket · data and ML</span></div><span class="st">LIVE DEMO</span></div>
         <h3>Chase</h3>
-        <p>Live win probability for T20 cricket, updated every ball. A calibrated gradient-boosted model trained on IPL ball-by-ball data, with match replay and a FastAPI backend on AWS Lambda.</p>
+        <p>Live win probability for T20 cricket, updated every ball. A calibrated gradient-boosted model trained on IPL ball-by-ball data, with match replay and a what-if panel.</p>
         <div class="tags"><span>Calibrated ML</span><span>LightGBM</span><span>FastAPI</span><span>AWS Lambda</span></div>
+        <div class="acts"><button class="btn main" type="button" data-open="d-chase">View details <small>→</small></button><a class="btn" href="https://manimod7.github.io/chase/" target="_blank" rel="noopener">Live demo <small>↗</small></a></div>
       </article>
-      <article class="card">
-        <div class="top"><div class="label" style="margin:0"><span>Cricket · VR and hardware</span></div><span class="st">PROTOTYPE</span></div>
+      <article class="card click" data-open="d-swinglab">
+        <div class="top"><div class="label" style="margin:0"><span>Cricket · VR and hardware</span></div><span class="st">LIVE DEMO</span></div>
         <h3>SwingLab</h3>
         <p>A VR batting lab built around my 3D-printed Quest 3 cricket bat. It tracks the controller in WebXR, measures each swing and scores it in a virtual drill.</p>
         <div class="tags"><span>WebXR</span><span>three.js</span><span>3D printing</span><span>Spatial data</span></div>
+        <div class="acts"><button class="btn main" type="button" data-open="d-swinglab">View details <small>→</small></button><a class="btn" href="https://manimod7.github.io/swinglab/" target="_blank" rel="noopener">Live demo <small>↗</small></a></div>
       </article>
     </div>
+
+    <dialog class="pd" id="d-chase" aria-labelledby="t-chase"><div class="pd-in">
+      <div class="pd-h"><div><div class="label" style="margin:0"><span>Cricket · data and ML</span></div><h3 id="t-chase">Chase</h3></div><button class="pd-x" type="button" aria-label="Close" data-close>×</button></div>
+      <div class="pd-b">
+        <p class="lede2">Chase estimates each team's chance of winning a T20 match and updates it after every ball, so you can watch a game swing in real time.</p>
+        <div><h4>What you can do</h4><ul>
+          <li><b>Replay</b> any recorded IPL match ball by ball and watch the win probability move.</li>
+          <li><b>What if:</b> set the innings, score, wickets, balls left and target to see the probability for any situation.</li>
+          <li><b>Model quality:</b> see how well the probabilities match real outcomes, next to simple baselines.</li>
+        </ul></div>
+        <div><h4>How it works</h4><ul>
+          <li><b>Data:</b> ball-by-ball records of complete 20-over IPL matches from Cricsheet, with team names unified across franchise renames.</li>
+          <li><b>Model:</b> LightGBM gradient boosting with monotone constraints so it follows cricket logic, then probability calibration. Train, validation and test sets are split by date (80/10/10) so the model never sees the future.</li>
+          <li><b>Same maths everywhere:</b> the trained trees are exported to JSON and evaluated identically in the browser, in Python and in LightGBM, with parity tests.</li>
+          <li><b>Backend:</b> a FastAPI service, deployable on AWS Lambda, for live scoring. The hosted demo runs entirely in your browser.</li>
+        </ul></div>
+        <div><h4>Results on 119 held-out matches</h4><div class="pd-nums">
+          <div><b>0.191</b><span>Brier score, calibrated model</span></div>
+          <div><b>0.050</b><span>expected calibration error</span></div>
+          <div><b>0</b><span>monotonicity violations</span></div>
+        </div></div>
+        <p class="pd-note">The model scores level with a plain logistic-regression baseline (Brier 0.190), and the app says so. The value is the calibrated, explainable probabilities and the replay, not a claim to beat simple models.</p>
+      </div>
+      <div class="pd-f"><a class="btn main" href="https://manimod7.github.io/chase/" target="_blank" rel="noopener">Open live demo <small>↗</small></a><a class="btn" href="https://github.com/manimod7/chase" target="_blank" rel="noopener">Source on GitHub <small>↗</small></a></div>
+    </div></dialog>
+
+    <dialog class="pd" id="d-swinglab" aria-labelledby="t-swinglab"><div class="pd-in">
+      <div class="pd-h"><div><div class="label" style="margin:0"><span>Cricket · VR and hardware</span></div><h3 id="t-swinglab">SwingLab</h3></div><button class="pd-x" type="button" aria-label="Close" data-close>×</button></div>
+      <div class="pd-b">
+        <p class="lede2">SwingLab turns a 3D-printed cricket bat held in a Meta Quest 3 controller into a batting trainer. It tracks every swing, scores it against a bowled ball and shows how consistent you are.</p>
+        <div><h4>What you can do</h4><ul>
+          <li><b>Calibrate</b> in a few seconds: it finds the bat's pivot point and your stance.</li>
+          <li><b>Play a drill</b> of bowled balls. Each swing gets a contact result and a 0 to 100 rating.</li>
+          <li><b>Review</b> every ball: swing speed, plane, path angle, backlift and timing, plus how repeatable your swings are.</li>
+          <li><b>Try it without a headset</b> using the built-in practice simulator, which runs in any browser.</li>
+        </ul></div>
+        <div><h4>How it works</h4><ul>
+          <li><b>Tracking:</b> WebXR and three.js read the controller pose every frame. The bat's pivot comes from a least-squares fit with outlier trimming.</li>
+          <li><b>Swing detection:</b> swings are segmented by bat-tip speed with hysteresis, then measured for peak speed, plane tilt, path angle, backlift and timing.</li>
+          <li><b>Contact:</b> a swept test between the moving blade and the ball decides the outcome from the face angle, so fast swings cannot tunnel through the ball.</li>
+          <li><b>Rating:</b> 45% contact quality, 30% power and 25% control.</li>
+        </ul></div>
+        <div><h4>Engineering</h4><div class="pd-nums">
+          <div><b>72 Hz</b><span>fixed simulation tick</span></div>
+          <div><b>15</b><span>automated tests on the maths</span></div>
+          <div><b>0</b><span>build step or backend</span></div>
+        </div></div>
+        <p class="pd-note">Headset mode is built for the Quest 3 browser. The page includes a device check to run first, and the simulator works on any desktop or phone browser.</p>
+      </div>
+      <div class="pd-f"><a class="btn main" href="https://manimod7.github.io/swinglab/" target="_blank" rel="noopener">Open live demo <small>↗</small></a><a class="btn" href="https://github.com/manimod7/swinglab" target="_blank" rel="noopener">Source on GitHub <small>↗</small></a></div>
+    </div></dialog>
   </section>
 
   <section class="sec" id="stack" data-sec>
@@ -582,6 +665,22 @@ img{max-width:100%}
   addEventListener('scroll',function(){spy();prog()},{passive:true});addEventListener('resize',prog);spy();prog();
 })();
 </script>
+<script>
+(function(){
+  var ds=[].slice.call(document.querySelectorAll('dialog.pd'));
+  function open(id){var d=document.getElementById(id);if(d&&d.showModal&&!d.open)d.showModal()}
+  document.querySelectorAll('[data-open]').forEach(function(el){
+    el.addEventListener('click',function(e){
+      if(e.target.closest('a'))return;
+      open(el.getAttribute('data-open'));
+    });
+  });
+  ds.forEach(function(d){
+    d.addEventListener('click',function(e){if(e.target===d||e.target.closest('[data-close]'))d.close()});
+  });
+})();
+</script>
+
 
 </body>
 </html>
