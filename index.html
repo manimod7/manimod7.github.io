@@ -111,7 +111,7 @@ h2{font-weight:800;font-size:clamp(26px,3.6vw,36px);letter-spacing:-.025em;line-
 
 
 .stat::before{content:"";display:block;width:24px;height:3px;border-radius:2px;background:var(--accent);margin-bottom:16px}
-.stat .big{font-weight:800;font-size:clamp(38px,4.6vw,52px);letter-spacing:-.035em;line-height:1}
+.stat{container-type:inline-size}.stat .big{white-space:nowrap;font-weight:800;font-size:clamp(30px,min(4.6vw,22cqw),52px);letter-spacing:-.035em;line-height:1}
 .stat .big sup{font-size:.42em;color:var(--accent);font-weight:700;letter-spacing:0;vertical-align:top;position:relative;top:.25em;margin-left:2px}
 .stat p{font-size:14px;color:var(--muted);margin-top:12px}
 
@@ -151,6 +151,8 @@ tr.total td{background:var(--surface2);font-weight:600}
 .tab em{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:6px}
 .tab[aria-selected="true"] em{color:var(--accent)}
 .panel{min-height:300px}
+@media(max-width:820px){.tab .tk{display:none}.tab{min-width:210px}}
+
 .panel[hidden]{display:none}
 .panel h3{font-weight:800;font-size:30px;letter-spacing:-.025em}
 .panel .sub{color:var(--muted);font-size:15px;margin-top:4px}
@@ -160,6 +162,26 @@ tr.total td{background:var(--surface2);font-weight:600}
 .panel li{position:relative;padding-left:22px;margin-bottom:10px;color:var(--muted)}
 .panel li::before{content:"";position:absolute;left:2px;top:.62em;width:8px;height:2px;background:var(--accent);border-radius:2px}
 .panel li b{color:var(--ink);font-weight:600}
+/* work history: editor styling */
+.tab{position:relative}
+.tab .tk{position:absolute;top:14px;right:14px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:2px 6px;background:var(--bg)}
+.tab[aria-selected="true"] .tk{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+.xp>.card{position:relative;overflow:hidden;padding-top:0}
+.chrome{display:flex;align-items:center;gap:7px;margin:0 -26px 22px;padding:12px 26px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12px;color:var(--muted)}
+.chrome i{width:9px;height:9px;border-radius:50%;background:var(--line);display:block}
+.chrome i{width:10px;height:10px}
+.chrome i:nth-child(1){background:#ff5f57}
+.chrome i:nth-child(2){background:#febc2e}
+.chrome i:nth-child(3){background:#28c840}
+.chrome span{margin-left:8px}
+.panel{position:relative}
+.panel>*{position:relative;z-index:1}
+.panel ul{counter-reset:ln}
+.panel li{counter-increment:ln;padding-left:36px}
+.panel li::before{content:counter(ln,decimal-leading-zero);width:auto;height:auto;background:none;border-radius:0;left:0;top:.3em;font-family:var(--mono);font-size:11.5px;color:var(--accent);opacity:.8}
+.sb{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:22px;padding-top:12px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.sb b{color:var(--accent);font-weight:500}
+.tab .tkimg{height:34px;width:auto;border-radius:0;display:block;align-self:flex-start;margin-bottom:8px}
 @media(max-width:820px){.xp{grid-template-columns:1fr}.tabs{flex-direction:row;overflow-x:auto;gap:8px;padding-bottom:4px}.tab{min-width:210px;border-color:var(--line);background:var(--surface)}}
 
 /* impact bars */
@@ -202,6 +224,13 @@ tr.total td{background:var(--surface2);font-weight:600}
 .edu .card h4{font-weight:700;font-size:17px}
 .edu .card p{color:var(--muted);font-size:14.5px;margin-top:4px}
 .edu .card .yr{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:12px}
+
+/* education: editor styling */
+.edu .card{position:relative;overflow:hidden;padding-top:0}
+.edu .chrome{margin:0 -26px 18px}
+.edu .card>*{position:relative;z-index:1}
+.edu .tk{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 40%,var(--line));border-radius:6px;padding:2px 6px;margin-left:8px;vertical-align:middle;background:var(--bg);font-weight:400}
+
 @media(max-width:820px){.rec{grid-template-columns:1fr}.edu{grid-template-columns:1fr}}
 
 /* contact */
@@ -271,6 +300,20 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
 .pd-note{font-size:13.5px;color:var(--muted);border-left:3px solid var(--accent);padding-left:12px}
 .pd-f{display:flex;flex-wrap:wrap;gap:8px;padding:16px 26px 22px;border-top:1px solid var(--line);margin-top:10px}
 @media(max-width:520px){.pd-h,.pd-b,.pd-f{padding-inline:18px}dialog.pd{border-radius:18px}}
+
+:root{--logo-bg:#fff}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--logo-bg:#000}}
+:root[data-theme="dark"]{--logo-bg:#000}
+:root[data-theme="light"]{--logo-bg:#fff}
+.tab .tkimg{background:transparent;width:70px;height:34px;object-fit:contain;object-position:left center}
+.edu .eduimg{display:block;width:150px;height:54px;object-fit:contain;object-position:left center;margin-bottom:12px}
+.edu .eduimg.dk{display:none}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .edu .eduimg.lt{display:none}:root:not([data-theme="light"]) .edu .eduimg.dk{display:block}}
+:root[data-theme="dark"] .edu .eduimg.lt{display:none}
+:root[data-theme="dark"] .edu .eduimg.dk{display:block}
+.proj .plogo{width:54px;height:54px;flex:none;display:block}
+.pill .pl{display:inline-flex;align-items:center;gap:10px}
+.pill .pl svg{flex:none}
 </style>
 </head>
 <body>
@@ -301,8 +344,8 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
     </div>
     <div class="links">
       <a class="pill main" href="#contact">Get in touch <small>↓</small></a>
-      <a class="pill" href="https://www.linkedin.com/in/manish-modwani" target="_blank" rel="noopener">LinkedIn <small>↗</small></a>
-      <a class="pill" href="https://github.com/manimod7" target="_blank" rel="noopener">GitHub <small>↗</small></a>
+      <a class="pill" href="https://www.linkedin.com/in/manish-modwani" target="_blank" rel="noopener"><span class="pl"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LinkedIn</span> <small>↗</small></a>
+      <a class="pill" href="https://github.com/manimod7" target="_blank" rel="noopener"><span class="pl"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</span> <small>↗</small></a>
       <a class="pill" href="Manish_Modwani_Resume.pdf" target="_blank" rel="noopener">Resume (PDF) <small>↓</small></a>
     </div>
   </header>
@@ -369,15 +412,16 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
   </section>
 
   <section class="sec" id="experience" data-sec>
-    <div class="sec-h"><h2>Experience</h2><span>4 roles · 3 companies · select a role</span></div>
+    <div class="sec-h"><h2>Experience</h2><span>4 roles · 3 companies</span></div>
     <div class="xp">
       <div class="tabs" role="tablist" aria-label="Roles">
-        <button class="tab" role="tab" id="t0" aria-selected="true" aria-controls="p0"><b>Amazon</b><span>SDE II · Financial Record Keeping</span><em>Sep 2025 – Present</em></button>
-        <button class="tab" role="tab" id="t1" aria-selected="false" aria-controls="p1" tabindex="-1"><b>PayPal</b><span>SWE → SWE II · Payments Platform</span><em>Jul 2022 – Sep 2025</em></button>
-        <button class="tab" role="tab" id="t2" aria-selected="false" aria-controls="p2" tabindex="-1"><b>Amazon</b><span>SDE Intern · Ship Tech</span><em>Jan – Jun 2022</em></button>
-        <button class="tab" role="tab" id="t3" aria-selected="false" aria-controls="p3" tabindex="-1"><b>Nectorr Labs</b><span>SDE Intern</span><em>May – Jun 2020</em></button>
+        <button class="tab" role="tab" id="t0" aria-selected="true" aria-controls="p0"><img class="tkimg" src="logos/tile-amazon.png" alt="" aria-hidden="true"><b>Amazon</b><span>SDE II · Financial Record Keeping</span><em>Sep 2025 – Present</em></button>
+        <button class="tab" role="tab" id="t1" aria-selected="false" aria-controls="p1" tabindex="-1"><img class="tkimg" src="logos/tile-paypal.png" alt="" aria-hidden="true"><b>PayPal</b><span>SWE → SWE II · Payments Platform</span><em>Jul 2022 – Sep 2025</em></button>
+        <button class="tab" role="tab" id="t2" aria-selected="false" aria-controls="p2" tabindex="-1"><img class="tkimg" src="logos/tile-amazon.png" alt="" aria-hidden="true"><b>Amazon</b><span>SDE Intern · Ship Tech</span><em>Jan – Jun 2022</em></button>
+        <button class="tab" role="tab" id="t3" aria-selected="false" aria-controls="p3" tabindex="-1"><img class="tkimg" src="logos/tile-nectorr.png" alt="" aria-hidden="true"><b>Nectorr Labs</b><span>SDE Intern</span><em>May – Jun 2020</em></button>
       </div>
       <div class="card">
+        <div class="chrome" aria-hidden="true"><i></i><i></i><i></i></div>
         <div class="panel" role="tabpanel" id="p0" aria-labelledby="t0">
           <h3>Amazon</h3><p class="sub">Software Development Engineer II · Digital Acceleration · Financial Record Keeping for Digital Products</p>
           <ul style="margin-top:22px">
@@ -386,6 +430,7 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
             <li>Built an <b>automated reconciliation system</b> for third-party (in-app purchase) payments that ingests monthly Apple financial reports and generates <b>unit, FX and price adjustments</b>, resolving discrepancies in quantity, FX rates, pricing and commissions for Audible and other Amazon businesses.</li>
             <li>Engineered <b>adjustment pipelines</b> aligning Amazon's internal revenue records with Apple's settlement data, handling spot versus month-end FX conversions and unit-level mismatches at scale.</li>
           </ul>
+          <div class="sb"><span>SDE II</span><span>Sep 2025 – Present</span></div>
         </div>
         <div class="panel" role="tabpanel" id="p1" aria-labelledby="t1" hidden>
           <h3>PayPal</h3><p class="sub">Payments Platform · System of Record for PayPal's Global Payments Data</p>
@@ -402,6 +447,7 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
             <li>Implemented a centralized data load library, <b>reducing redundancy by 15%</b>.</li>
             <li>Optimized key APIs and components: <b>25% lower latency</b> on critical services and <b>20% better data integrity</b>, stable at peak load.</li>
           </ul>
+          <div class="sb"><span>SWE → SWE II</span><span>Jul 2022 – Sep 2025</span></div>
         </div>
         <div class="panel" role="tabpanel" id="p2" aria-labelledby="t2" hidden>
           <h3>Amazon</h3><p class="sub">SDE Intern · Ship Tech · Tech Platforms for Cross-Border Delivery</p>
@@ -409,12 +455,14 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
             <li>Built APIs that generate <b>manifest documentation previews</b> for delivery partners, improving interoperability and cutting documentation prep time.</li>
             <li>Created a data processing tool for <b>customs clearance during the Brexit transition</b>, reducing processing time by 40%.</li>
           </ul>
+          <div class="sb"><span>SDE Intern</span><span>Jan – Jun 2022</span></div>
         </div>
         <div class="panel" role="tabpanel" id="p3" aria-labelledby="t3" hidden>
           <h3>Nectorr Labs</h3><p class="sub">SDE Intern</p>
           <ul style="margin-top:22px">
             <li>Developed <b>TextConnect</b>, a real-time web chat application using Node.js and Socket.io.</li>
           </ul>
+          <div class="sb"><span>SDE Intern</span><span>May – Jun 2020</span></div>
         </div>
       </div>
     </div>
@@ -452,14 +500,16 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
     <div class="sec-h"><h2>Projects</h2><span>tap a project for details · live demos</span></div>
     <div class="proj">
       <article class="card click" data-open="d-chase">
-        <div class="top"><div class="label" style="margin:0"><span>Cricket · data and ML</span></div><span class="st">LIVE DEMO</span></div>
+        <svg class="plogo" viewBox="0 0 48 48" fill="none" aria-hidden="true"><circle cx="24" cy="24" r="20" stroke="var(--accent)" stroke-width="2.4"/><path d="M9 24H39" stroke="var(--muted)" stroke-width="1" opacity=".45"/><path d="M9 33C14 33 15 20 20 22S27 31 31 25 35.5 15.5 39 16" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="39" cy="16" r="3" fill="var(--accent)"/></svg>
+        <div class="top"><div class="label" style="margin:0"><span>Cricket · data and ML</span></div></div>
         <h3>Chase</h3>
         <p>Live win probability for T20 cricket, updated every ball. A calibrated gradient-boosted model trained on IPL ball-by-ball data, with match replay and a what-if panel.</p>
         <div class="tags"><span>Calibrated ML</span><span>LightGBM</span><span>FastAPI</span><span>AWS Lambda</span></div>
         <div class="acts"><button class="btn main" type="button" data-open="d-chase">View details <small>→</small></button><a class="btn" href="https://manimod7.github.io/chase/" target="_blank" rel="noopener">Live demo <small>↗</small></a></div>
       </article>
       <article class="card click" data-open="d-swinglab">
-        <div class="top"><div class="label" style="margin:0"><span>Cricket · VR and hardware</span></div><span class="st">LIVE DEMO</span></div>
+        <svg class="plogo" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M5 33C8 40 15 45 23 45" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" opacity=".35"/><path d="M9 24C11 33 18 40 27 41" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" opacity=".6"/><g transform="rotate(40 24 24)"><rect x="22.4" y="28" width="3.2" height="17" rx="1.6" fill="var(--ink)"/><path d="M19.5 29V11a4.5 4.5 0 0 1 9 0v18z" fill="var(--ink)"/></g><circle cx="40" cy="30" r="4.4" fill="var(--accent)"/></svg>
+        <div class="top"><div class="label" style="margin:0"><span>Cricket · VR and hardware</span></div></div>
         <h3>SwingLab</h3>
         <p>A VR batting lab built around my 3D-printed Quest 3 cricket bat. It tracks the controller in WebXR, measures each swing and scores it in a virtual drill.</p>
         <div class="tags"><span>WebXR</span><span>three.js</span><span>3D printing</span><span>Spatial data</span></div>
@@ -522,10 +572,12 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
   <section class="sec" id="stack" data-sec>
     <div class="sec-h"><h2>Stack</h2><span>highlighted: tools I use daily</span></div>
     <div class="stackgrid">
-      <div class="card"><div class="label">Languages &amp; core</div><div class="chips"><span class="core">Java</span><span>C++</span><span>OOP</span><span>Data structures &amp; algorithms</span></div></div>
-      <div class="card"><div class="label">Frameworks &amp; tools</div><div class="chips"><span class="core">Spring Boot</span><span>Node.js</span><span>n8n</span><span>REST APIs</span><span>Git</span><span>CI/CD</span><span>Testing frameworks</span><span>Code reviews</span></div></div>
-      <div class="card"><div class="label">Data &amp; cloud</div><div class="chips"><span class="core">SQL</span><span class="core">S3</span><span class="core">Glue</span><span class="core">Redshift</span><span class="core">DynamoDB</span><span class="core">Iceberg</span><span class="core">Airflow</span><span class="core">OpenSearch</span><span class="core">QuickSight</span><span>EMR</span><span>ECS</span><span>Kinesis</span><span>Lambda</span><span>CloudWatch</span><span>IAM</span><span>CloudTrail</span><span>Bedrock</span><span>CodePipeline</span><span>CDK</span><span>Secrets Manager</span></div></div>
-      <div class="card"><div class="label">Design &amp; architecture</div><div class="chips"><span class="core">Microservices</span><span class="core">Distributed systems</span><span>High-level design</span><span>Low-level design</span><span>Event-driven architecture</span><span>Agile</span><span>SDLC</span></div></div>
+      <div class="card"><div class="label">Languages &amp; core</div><div class="chips"><span class="core">Java</span><span class="core">Python</span><span class="core">SQL</span><span>Scala</span><span>Bash</span><span>C++</span><span>OOP</span><span>Data structures &amp; algorithms</span></div></div>
+      <div class="card"><div class="label">Frameworks &amp; tools</div><div class="chips"><span class="core">Spring Boot</span><span>Node.js</span><span>n8n</span><span>REST APIs</span><span>Postman</span><span>Git</span><span>Jenkins</span><span>CI/CD</span><span>Docker</span><span>Kubernetes</span><span>Testing frameworks</span><span>Code reviews</span></div></div>
+      <div class="card"><div class="label">Data</div><div class="chips"><span class="core">S3</span><span class="core">Glue</span><span class="core">Redshift</span><span class="core">DynamoDB</span><span class="core">Aurora</span><span class="core">Iceberg</span><span class="core">Airflow</span><span class="core">OpenSearch</span><span class="core">QuickSight</span><span class="core">Athena</span><span>EMR</span><span>Kafka</span><span>Kinesis</span></div></div>
+      <div class="card"><div class="label">Cloud &amp; messaging</div><div class="chips"><span class="core">Step Functions</span><span>Lambda</span><span>ECS</span><span>Fargate</span><span>ECR</span><span>SNS</span><span>SQS</span><span>EventBridge</span><span>VPC</span><span>IAM</span><span>CloudWatch</span><span>CloudTrail</span><span>CodePipeline</span><span>CDK</span><span>Secrets Manager</span></div></div>
+      <div class="card"><div class="label">AI &amp; LLM</div><div class="chips"><span class="core">LLM</span><span class="core">RAG</span><span>Embeddings</span><span>Vector databases</span><span>MCP</span><span>Bedrock</span></div></div>
+      <div class="card"><div class="label">Design &amp; architecture</div><div class="chips"><span class="core">Microservices</span><span class="core">Scalable &amp; distributed systems</span><span class="core">API design</span><span>High-level design</span><span>Low-level design</span><span>Event-driven architecture</span><span>Agile</span><span>SDLC</span></div></div>
     </div>
   </section>
 
@@ -538,8 +590,8 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
       <div class="card"><h4>Hackathon runner-up</h4><div class="org">PAYPAL</div><p>Designed a log-analysis tool that groups, analyzes and triages call logs and failures to speed up root-cause investigation.</p></div>
     </div>
     <div class="edu">
-      <div class="card"><h4>B.E. (Hons.) Electrical &amp; Electronics Engineering</h4><p>BITS Pilani, Hyderabad Campus</p><div class="yr">2018 – 2022</div></div>
-      <div class="card"><h4>Software Development</h4><p>Scaler School of Technology</p><div class="yr">2024 – 2025</div></div>
+      <div class="card"><div class="chrome" aria-hidden="true"><i></i><i></i><i></i></div><img class="eduimg" src="logos/bits.png" alt="BITS Pilani"><h4>B.E. (Hons.) Electrical &amp; Electronics Engineering</h4><p>BITS Pilani, Hyderabad Campus</p><div class="yr">2018 – 2022</div></div>
+      <div class="card"><div class="chrome" aria-hidden="true"><i></i><i></i><i></i></div><img class="eduimg lt" src="logos/scaler.png" alt="Scaler School of Technology"><img class="eduimg dk" src="logos/scaler-dark.png" alt="" aria-hidden="true"><h4>Software Development</h4><p>Scaler School of Technology</p><div class="yr">2024 – 2025</div></div>
     </div>
   </section>
 
