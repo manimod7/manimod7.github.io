@@ -314,6 +314,14 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
 .proj .plogo{width:54px;height:54px;flex:none;display:block}
 .pill .pl{display:inline-flex;align-items:center;gap:10px}
 .pill .pl svg{flex:none}
+.mail .addr{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.16);padding:12px 14px;border-radius:12px}
+.mail .addr svg,.mail a svg{flex:none}
+.mail .addr code,:root[data-theme="dark"] .mail .addr code,:root:not([data-theme="light"]) .mail .addr code{background:none!important;padding:0;border-radius:0;min-width:0}
+:root[data-theme="dark"] .mail .addr{background:rgba(0,0,0,.12)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .mail .addr{background:rgba(0,0,0,.12)}}
+.mail a{display:flex;align-items:center;justify-content:center;gap:10px}
+.mail .gm{flex:none;width:30px;height:30px;border-radius:8px;background:#fff;display:grid;place-items:center}
+.mail .gm svg{width:20px;height:auto;display:block}
 </style>
 </head>
 <body>
@@ -570,7 +578,7 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
   </section>
 
   <section class="sec" id="stack" data-sec>
-    <div class="sec-h"><h2>Stack</h2><span>highlighted: tools I use daily</span></div>
+    <div class="sec-h"><h2>Stack</h2><span>Tools I use daily</span></div>
     <div class="stackgrid">
       <div class="card"><div class="label">Languages &amp; core</div><div class="chips"><span class="core">Java</span><span class="core">Python</span><span class="core">SQL</span><span>Scala</span><span>Bash</span><span>C++</span><span>OOP</span><span>Data structures &amp; algorithms</span></div></div>
       <div class="card"><div class="label">Frameworks &amp; tools</div><div class="chips"><span class="core">Spring Boot</span><span>Node.js</span><span>n8n</span><span>REST APIs</span><span>Postman</span><span>Git</span><span>Jenkins</span><span>CI/CD</span><span>Docker</span><span>Kubernetes</span><span>Testing frameworks</span><span>Code reviews</span></div></div>
@@ -601,9 +609,9 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
       <p>Backend, payments, data platforms and financial systems. Email is the fastest way to reach me.</p>
     </div>
     <div class="mail">
-      <code id="addr">manimod7@gmail.com</code>
+      <div class="addr"><span class="gm"><svg viewBox="52 42 88 66" aria-hidden="true"><path fill="#4285f4" d="M58 108h14V74L52 59v43c0 3.32 2.69 6 6 6"/><path fill="#34a853" d="M120 108h14c3.32 0 6-2.69 6-6V59l-20 15"/><path fill="#fbbc04" d="M120 48v26l20-15v-8c0-7.42-8.47-11.65-14.4-7.2"/><path fill="#ea4335" d="M72 74V48l24 18 24-18v26L96 92"/><path fill="#c5221f" d="M52 51v8l20 15V48l-5.6-4.2c-5.94-4.45-14.4-.22-14.4 7.2"/></svg></span><code id="addr">manimod7@gmail.com</code></div>
       <button type="button" id="copy">Copy email</button>
-      <a href="https://www.linkedin.com/in/manish-modwani" target="_blank" rel="noopener">Message on LinkedIn ↗</a>
+      <a href="https://www.linkedin.com/in/manish-modwani" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> Message on LinkedIn ↗</a>
     </div>
   </section>
 
