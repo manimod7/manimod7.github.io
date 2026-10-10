@@ -46,7 +46,6 @@ Each project has its own detailed README.
 
 ```
 index.html                  the whole site (HTML, CSS and JavaScript in one file)
-Manish_Modwani_Resume.pdf   linked from the page
 README.md                   this file
 ```
 
@@ -58,7 +57,7 @@ The site is served by GitHub Pages from the `main` branch root of the repository
 2. Edit and click **Commit changes**.
 3. Wait a minute or two, then hard refresh (Ctrl+Shift+R) https://manimod7.github.io/.
 
-To replace the resume, use **Add file, Upload files** with the same name `Manish_Modwani_Resume.pdf`.
+The Resume and Cover letter buttons link to Google Drive files. To change one, update its `href` in `index.html`.
 
 ## Tech notes
 
