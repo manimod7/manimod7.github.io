@@ -390,10 +390,10 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
 @keyframes clDraw{0%{stroke-dashoffset:1;opacity:1}38%,90%{stroke-dashoffset:0;opacity:1}98%,100%{stroke-dashoffset:0;opacity:0}}
 .cl-dot{transform-box:fill-box;transform-origin:center;animation:clDot 5s ease-in-out infinite}
 @keyframes clDot{0%,35%{transform:scale(0);opacity:0}41%{transform:scale(1.7);opacity:1}48%,90%{transform:scale(1);opacity:1}98%,100%{transform:scale(1);opacity:0}}
-.sl-bat{transform-box:view-box;transform-origin:24px 24px;transform:rotate(40deg);animation:slBat 4.4s infinite}
-@keyframes slBat{0%,30%{transform:rotate(40deg);animation-timing-function:cubic-bezier(.45,0,.55,1)}48%{transform:rotate(-28deg);animation-timing-function:cubic-bezier(.6,0,.9,.4)}57%{transform:rotate(106deg);animation-timing-function:ease-out}64%{transform:rotate(112deg);animation-timing-function:cubic-bezier(.45,0,.55,1)}84%,100%{transform:rotate(40deg)}}
-.sl-ball{transform-box:fill-box;transform-origin:center;animation:slBall 4.4s infinite}
-@keyframes slBall{0%,56%{transform:translate(0,0) scale(1);opacity:1}57%{transform:translate(0,0) scale(1.15);opacity:1;animation-timing-function:cubic-bezier(.2,.6,.4,1)}74%{transform:translate(15px,-24px) scale(.45);opacity:0}75%,88%{transform:translate(0,0) scale(1);opacity:0}100%{transform:translate(0,0) scale(1);opacity:1}}
+.sl-bat{transform-box:view-box;transform-origin:24px 34px;transform:rotate(38deg);animation:slBat 4.6s infinite}
+@keyframes slBat{0%{transform:rotate(-8deg);animation-timing-function:cubic-bezier(.3,0,.3,1)}22%{transform:rotate(-52deg);animation-timing-function:ease-in-out}42%{transform:rotate(-56deg);animation-timing-function:cubic-bezier(.6,0,.9,.55)}52%{transform:rotate(38deg);animation-timing-function:cubic-bezier(.1,.6,.3,1)}61%{transform:rotate(54deg);animation-timing-function:ease-in-out}78%{transform:rotate(52deg);animation-timing-function:cubic-bezier(.45,0,.55,1)}94%,100%{transform:rotate(-8deg)}}
+.sl-ball{transform-box:fill-box;transform-origin:center;animation:slBall 4.6s infinite}
+@keyframes slBall{0%,38%{transform:translate(17px,-5px) scale(.9);opacity:0;animation-timing-function:linear}40%{opacity:1}52%{transform:translate(0,0) scale(1);opacity:1;animation-timing-function:linear}53%{transform:translate(0,0) scale(1.25,.8);opacity:1;animation-timing-function:cubic-bezier(.1,.7,.3,1)}62%{transform:translate(4px,-14px) scale(.8);opacity:.9}72%{transform:translate(7px,-26px) scale(.55);opacity:0}100%{transform:translate(17px,-5px) scale(.9);opacity:0}}
 @media(prefers-reduced-motion:reduce){.cl-line,.cl-dot,.sl-bat,.sl-ball{animation:none}.cl-line{stroke-dashoffset:0}.cl-dot{transform:none}}
 </style>
 </head>
@@ -591,7 +591,7 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
         <div class="acts"><button class="btn main" type="button" data-open="d-chase">View details <small>→</small></button><a class="btn" href="https://manimod7.github.io/chase/" target="_blank" rel="noopener">Live demo <small>↗</small></a></div>
       </article>
       <article class="card click" data-open="d-swinglab">
-        <svg class="plogo" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M5 33C8 40 15 45 23 45" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" opacity=".35"/><path d="M9 24C11 33 18 40 27 41" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" opacity=".6"/><g class="sl-bat" transform="rotate(40 24 24)"><rect x="22.4" y="28" width="3.2" height="17" rx="1.6" fill="var(--ink)"/><path d="M19.5 29V11a4.5 4.5 0 0 1 9 0v18z" fill="var(--ink)"/></g><circle class="sl-ball" cx="40" cy="30" r="4.4" fill="var(--accent)"/></svg>
+        <svg class="plogo" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M5 33C8 40 15 45 23 45" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" opacity=".35"/><path d="M9 24C11 33 18 40 27 41" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" opacity=".6"/><g class="sl-bat" transform="rotate(38 24 34)"><rect x="22.4" y="28" width="3.2" height="17" rx="1.6" fill="var(--ink)"/><path d="M19.5 29V11a4.5 4.5 0 0 1 9 0v18z" fill="var(--ink)"/></g><circle class="sl-ball" cx="39.6" cy="28.5" r="4.4" fill="var(--accent)"/></svg>
         <div class="top"><div class="label" style="margin:0"><span>Cricket · VR and hardware</span></div></div>
         <h3>SwingLab</h3>
         <p>A VR batting lab built around my 3D-printed Quest 3 cricket bat. It tracks the controller in WebXR, measures each swing and scores it in a virtual drill.</p>
