@@ -395,6 +395,42 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
 .sl-ball{transform-box:fill-box;transform-origin:center;animation:slBall 2s infinite}
 @keyframes slBall{0%{transform:translate(18px,4px);opacity:1;animation-timing-function:linear}13.2%{transform:translate(0,0) scale(1);opacity:1}14.2%{transform:translate(0,0) scale(1.25,.8);opacity:1;animation-timing-function:cubic-bezier(.1,.7,.3,1)}20%{transform:translate(8px,-8px) scale(.9);opacity:1}32%{transform:translate(14px,-24px) scale(.5);opacity:0}99%{transform:translate(18px,4px);opacity:0}100%{transform:translate(18px,4px);opacity:1}}
 @media(prefers-reduced-motion:reduce){.cl-line,.cl-dot,.sl-bat,.sl-ball{animation:none}.cl-line{stroke-dashoffset:0}.cl-dot{transform:none}}
+
+/* every surface reacts to the pointer in the same quiet way */
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  .card,.tbl,.contact,.stat{transition:border-color .25s,transform .25s cubic-bezier(.3,.7,.2,1),box-shadow .25s,background-color .25s}
+  .card:hover,.stat:hover{border-color:color-mix(in srgb,var(--accent) 40%,var(--line));transform:translateY(-2px)}
+  .tbl:hover{border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+  .contact:hover{transform:translateY(-2px)}
+}
+
+/* universal pointer reaction: every heading, chip, image, link and line of text answers the cursor, quietly */
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  h1,h2,h3,h4,h5,h6{transition:color .25s ease}
+  h1:hover,h2:hover,h3:hover,h4:hover,h5:hover,h6:hover{color:color-mix(in srgb,var(--ink) 82%,var(--accent))}
+  .chip,.tag,.badge,.eyebrow,.label,.k{transition:transform .2s cubic-bezier(.3,.7,.2,1),border-color .2s,color .2s,background-color .2s}
+  .chip:hover,.tag:hover,.badge:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+  .eyebrow:hover,.label:hover,.k:hover{color:var(--ink)}
+  img,.lg,.plogo,.tkimg,.eduimg{transition:transform .3s cubic-bezier(.3,.7,.2,1),filter .3s}
+  img:hover{transform:scale(1.035)}
+  p a,li a,dd a,.note a,.lead a{text-decoration-color:color-mix(in srgb,var(--accent) 0%,transparent);text-underline-offset:3px;transition:color .2s,text-decoration-color .2s}
+  p a:hover,li a:hover,dd a:hover,.note a:hover,.lead a:hover{color:var(--accent);text-decoration-color:var(--accent)}
+  input:hover,textarea:hover,select:hover{border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+  input,textarea,select{transition:border-color .2s}
+  .hot,.cool{transition:color .28s ease}
+  .hot{color:var(--ink)!important}
+}
+
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  b,strong,.num,.big,.org,.yr,dt{transition:color .22s ease}
+  b:hover,strong:hover,.num:hover,.big:hover,.org:hover,.yr:hover,dt:hover{color:color-mix(in srgb,var(--ink) 70%,var(--accent))}
+  .bar,.track{transition:filter .25s}
+  .bar:hover,.track:hover{filter:brightness(1.08) saturate(1.1)}
+  .tab,.ptabs button,.navlinks a{transition:background-color .2s,color .2s,border-color .2s,transform .2s}
+  .ptabs button:not([aria-selected="true"]):hover{border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+}
+
+@media (hover:hover) and (prefers-reduced-motion:no-preference){li:hover::marker{color:var(--accent)}}
 </style>
 </head>
 <body>
@@ -867,6 +903,22 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
   t.addEventListener('click',function(){scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})});
   document.querySelectorAll('.nav a').forEach(function(a){new MutationObserver(function(){if(a.classList.contains('on'))a.setAttribute('aria-current','true');else a.removeAttribute('aria-current')}).observe(a,{attributes:true,attributeFilter:['class']})});
   var on=document.querySelector('.nav a.on');if(on)on.setAttribute('aria-current','true');
+})();
+</script>
+
+<script>
+/* lines of muted text brighten gently under the cursor */
+(function(){
+  if(!window.matchMedia||!matchMedia("(hover:hover)").matches||matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  var probe=document.createElement("i");probe.setAttribute("aria-hidden","true");probe.style.cssText="position:absolute;width:0;height:0;overflow:hidden;color:var(--muted);pointer-events:none";document.body.appendChild(probe);
+  document.addEventListener("pointerover",function(e){
+    var t=e.target;if(!t||t.nodeType!==1||e.pointerType==="touch"||t.closest(".navlinks,button,a.btn"))return;
+    if(getComputedStyle(t).color===getComputedStyle(probe).color&&t.textContent.trim()){t.classList.remove("cool");t.classList.add("hot");}
+  },{passive:true});
+  document.addEventListener("pointerout",function(e){
+    var t=e.target;if(!t||t.nodeType!==1||!t.classList.contains("hot"))return;
+    t.classList.remove("hot");t.classList.add("cool");setTimeout(function(){t.classList.remove("cool");},320);
+  },{passive:true});
 })();
 </script>
 </body>
