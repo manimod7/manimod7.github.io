@@ -288,7 +288,7 @@ html.js .rv .chips span{opacity:0;transform:translateY(6px)}
 html.js .rv.in .chips span{opacity:1;transform:none;transition:opacity .45s,transform .45s;transition-delay:calc(var(--i,0)*28ms + .15s)}
 html.js .fill{animation-play-state:paused}
 html.js [data-in] .fill{animation-play-state:running}
-@media(prefers-reduced-motion:no-preference){html.tt,html.tt *,html.tt *::before,html.tt *::after{transition:background-color .35s,color .35s,border-color .35s,box-shadow .35s!important}}
+@media(prefers-reduced-motion:no-preference){html.tt,html.tt *,html.tt *::before,html.tt *::after{transition:background-color .25s ease,color .25s ease,border-color .25s ease,box-shadow .25s ease!important}::view-transition-old(root),::view-transition-new(root){animation-duration:.3s;animation-timing-function:cubic-bezier(.4,0,.2,1)}}
 dialog.pd[open]{animation:dlgIn .34s cubic-bezier(.2,.7,.2,1)}
 dialog.pd[open]::backdrop{animation:bdIn .34s ease-out}
 dialog.pd.out{animation:dlgOut .22s ease-in forwards}
@@ -699,10 +699,15 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
 (function(){
   var root=document.documentElement;
   try{var sv=localStorage.getItem('mm-theme');if(sv==='light'||sv==='dark')root.setAttribute('data-theme',sv)}catch(e){}
+  function vt(fn){
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches){fn();return}
+    if(document.startViewTransition){document.startViewTransition(fn);return}
+    root.classList.add('tt');setTimeout(function(){root.classList.remove('tt')},300);fn();
+  }
   document.getElementById('tg').addEventListener('click',function(){
     var cur=root.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
     var nx=cur==='dark'?'light':'dark';
-    root.classList.add('tt');setTimeout(function(){root.classList.remove('tt')},450);root.setAttribute('data-theme',nx);
+    vt(function(){root.setAttribute('data-theme',nx)});
     try{localStorage.setItem('mm-theme',nx)}catch(e){}
   });
 
