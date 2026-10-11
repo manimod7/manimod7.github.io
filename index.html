@@ -8,6 +8,7 @@
 <meta property="og:description" content="Software Engineer at Amazon, previously PayPal.">
 <meta property="og:type" content="website">
 <title>Manish Modwani</title>
+<script>document.documentElement.classList.add("js")</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -245,6 +246,41 @@ tr.total td{background:var(--surface2);font-weight:600}
 @media(max-width:760px){.contact{grid-template-columns:1fr}.mail{min-width:0}}
 footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:28px;font-family:var(--mono);font-size:12px;color:var(--muted)}
 
+
+/* ---- polish layer: subtle motion and interaction (all disabled under reduced motion) ---- */
+.card{background-image:radial-gradient(260px circle at var(--mx,-400px) var(--my,-400px),color-mix(in srgb,var(--accent) 9%,transparent),transparent 72%),linear-gradient(180deg,color-mix(in srgb,var(--ink) 3.5%,transparent),transparent 45%)}
+.contact{background:radial-gradient(380px circle at var(--mx,-400px) var(--my,-400px),rgba(255,255,255,.16),transparent 70%),radial-gradient(ellipse 60% 90% at 100% 0%,rgba(255,255,255,.24),transparent 62%),var(--accent)}
+.nav{position:relative}
+.nav .mk,.nav a,.nav .tg{position:relative;z-index:1}
+.nav .ind{position:absolute;left:0;top:5px;height:0;width:0;border-radius:999px;background:var(--ink);z-index:0;pointer-events:none;opacity:0;transition:transform .38s cubic-bezier(.3,.7,.2,1),width .38s cubic-bezier(.3,.7,.2,1),opacity .2s}
+.nav .ind.ready{opacity:1}
+html.js .nav a.on{background:transparent}
+.nav a{transition:color .25s}
+.pill small{display:inline-block;transition:transform .2s}
+.pill:hover small{transform:translate(2px,-2px)}
+.pill.main:hover small{transform:translateY(2px)}
+.pill:active,.btn:active,.run:active,.mail button:active,.mail a:active,.tab:active{transform:scale(.98)}
+.proj .plogo{transition:transform .35s cubic-bezier(.3,.7,.2,1)}
+.proj .card:hover .plogo{transform:scale(1.06) rotate(-3deg)}
+#rows tr:not(.total) td{transition:background-color .2s}
+#rows tr:not(.total):hover td{background:color-mix(in srgb,var(--accent) 5%,transparent)}
+.panel:not([hidden]){animation:panelIn .4s cubic-bezier(.2,.7,.2,1)}
+@keyframes panelIn{from{opacity:0;transform:translateY(8px)}}
+.hero::after{transform:translate3d(var(--hx,0px),var(--hy,0px),0);transition:transform .7s ease-out}
+@keyframes up{from{opacity:0;transform:translateY(14px)}}
+html.js .hero .status,html.js .hero h1,html.js .hero .lede,html.js .hero .links .pill{animation:up .75s cubic-bezier(.2,.7,.2,1) both}
+html.js .hero h1{animation-delay:.08s}html.js .hero .lede{animation-delay:.16s}
+html.js .hero .links .pill:nth-child(1){animation-delay:.2s}html.js .hero .links .pill:nth-child(2){animation-delay:.26s}html.js .hero .links .pill:nth-child(3){animation-delay:.32s}html.js .hero .links .pill:nth-child(4){animation-delay:.38s}
+html.js .rv{opacity:0;transform:translateY(16px);transition:opacity .65s cubic-bezier(.2,.7,.2,1) var(--d,0s),transform .65s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+html.js .rv.in{opacity:1;transform:none}
+html.js .sec-h.rv h2::before{width:0;transition:width .7s cubic-bezier(.2,.7,.2,1) .25s}
+html.js .sec-h.rv.in h2::before{width:28px}
+html.js .rv .chips span{opacity:0;transform:translateY(6px)}
+html.js .rv.in .chips span{opacity:1;transform:none;transition:opacity .45s,transform .45s;transition-delay:calc(var(--i,0)*28ms + .15s)}
+html.js .fill{animation-play-state:paused}
+html.js [data-in] .fill{animation-play-state:running}
+@media(prefers-reduced-motion:no-preference){html.tt,html.tt *,html.tt *::before,html.tt *::after{transition:background-color .35s,color .35s,border-color .35s,box-shadow .35s!important}}
+@media print{html.js .rv{opacity:1!important;transform:none!important}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 [hidden]{display:none!important}
 img{max-width:100%}
@@ -330,6 +366,7 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
 <div class="prog" id="prog"></div>
 <div class="navwrap">
   <nav class="nav" aria-label="Sections">
+    <i class="ind" aria-hidden="true"></i>
     <span class="mk">MM</span>
     <a href="#top" class="on" data-s="top">Overview</a>
     <a href="#featured" data-s="featured">Featured</a>
@@ -626,7 +663,7 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
   document.getElementById('tg').addEventListener('click',function(){
     var cur=root.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
     var nx=cur==='dark'?'light':'dark';
-    root.setAttribute('data-theme',nx);
+    root.classList.add('tt');setTimeout(function(){root.classList.remove('tt')},450);root.setAttribute('data-theme',nx);
     try{localStorage.setItem('mm-theme',nx)}catch(e){}
   });
 
@@ -687,11 +724,11 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
   });
 
   var links=[].slice.call(document.querySelectorAll('.nav a'));
-  var ids=['top','experience','impact','projects','stack','recognition','contact'];
+  var ids=['top','featured','experience','impact','projects','stack','recognition','contact'];
   function spy(){
     var y=window.scrollY+140,cur='top';
     ids.forEach(function(id){var el=document.getElementById(id);if(el&&el.getBoundingClientRect().top+window.scrollY<=y)cur=id});
-    links.forEach(function(a){a.classList.toggle('on',a.dataset.s===cur)});
+    if(innerHeight+scrollY>=document.documentElement.scrollHeight-4)cur='contact';links.forEach(function(a){a.classList.toggle('on',a.dataset.s===cur)});if(window.__ind)window.__ind();
   }
   var pg=document.getElementById('prog');
   function prog(){var h=document.documentElement.scrollHeight-innerHeight;pg.style.transform='scaleX('+(h>0?Math.min(1,scrollY/h):0)+')'}
@@ -715,5 +752,66 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
 </script>
 
 
+<script>
+(function(){
+  var root=document.documentElement,reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* sliding nav indicator */
+  var nav=document.querySelector('.nav'),ind=nav&&nav.querySelector('.ind'),first=true;
+  window.__ind=function(){
+    var a=nav&&nav.querySelector('a.on');if(!a||!ind)return;
+    ind.style.width=a.offsetWidth+'px';ind.style.height=a.offsetHeight+'px';ind.style.top=a.offsetTop+'px';
+    ind.style.transform='translateX('+a.offsetLeft+'px)';
+    if(first){ind.style.transition='none';requestAnimationFrame(function(){requestAnimationFrame(function(){ind.style.transition='';ind.classList.add('ready')})});first=false}
+    if(nav.scrollWidth>nav.clientWidth+2)nav.scrollTo({left:a.offsetLeft-nav.clientWidth/2+a.offsetWidth/2,behavior:reduce?'auto':'smooth'});
+  };
+  window.__ind();addEventListener('resize',window.__ind);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(window.__ind);
+  if(reduce)return;
+  /* pointer spotlight on cards and the contact block, plus a gentle hero glow */
+  if(matchMedia('(hover: hover) and (pointer: fine)').matches){
+    var page=document.querySelector('.page');
+    page.addEventListener('pointermove',function(e){
+      var c=e.target.closest&&e.target.closest('.card,.contact');
+      if(c){var r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')}
+      var h=e.target.closest&&e.target.closest('.hero');
+      if(h){var q=h.getBoundingClientRect();h.style.setProperty('--hx',((e.clientX-q.left)/q.width-.5)*28+'px');h.style.setProperty('--hy',((e.clientY-q.top)/q.height-.5)*18+'px')}
+    },{passive:true});
+    page.addEventListener('pointerleave',function(){page.querySelectorAll('.card,.contact').forEach(function(c){c.style.removeProperty('--mx');c.style.removeProperty('--my')})});
+  }
+  if(!('IntersectionObserver' in window))return;
+  /* scroll reveal with a short stagger */
+  var sel='.sec-h,.grid>.card,.proj>.card,.xp>*,.imp>.card,.stackgrid>.card,.rec>.card,.edu>.card,.roy>.card,.contact';
+  var els=[].slice.call(document.querySelectorAll(sel));
+  els.forEach(function(el){
+    var sibs=[].slice.call(el.parentElement.children).filter(function(x){return els.indexOf(x)>-1});
+    el.style.setProperty('--d',(Math.min(sibs.indexOf(el),5)*0.07)+'s');
+    el.classList.add('rv');
+    [].forEach.call(el.querySelectorAll('.chips span'),function(c,i){c.style.setProperty('--i',i)});
+  });
+  /* count-up for the numeric headline stats */
+  var counts=[].slice.call(document.querySelectorAll('.stat .big')).map(function(b){
+    var t=b.firstChild;if(!t||t.nodeType!==3)return null;
+    var m=/^([\d.]+)(.*)$/.exec(t.nodeValue);if(!m)return null;
+    var dec=(m[1].split('.')[1]||'').length;
+    return {node:t,end:parseFloat(m[1]),rest:m[2],dec:dec,final:t.nodeValue,card:b.closest('.stat')};
+  }).filter(Boolean);
+  counts.forEach(function(c){c.node.nodeValue=(0).toFixed(c.dec)+c.rest});
+  function run(c){
+    var t0=performance.now(),D=1200;
+    (function f(n){var k=Math.min(1,(n-t0)/D),e=1-Math.pow(1-k,3);
+      c.node.nodeValue=(c.end*e).toFixed(c.dec)+c.rest;
+      if(k<1)requestAnimationFrame(f);else c.node.nodeValue=c.final})(t0);
+  }
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(en){
+      if(!en.isIntersecting)return;var el=en.target;io.unobserve(el);
+      el.classList.add('in');el.setAttribute('data-in','');
+      counts.forEach(function(c){if(c.card===el)setTimeout(function(){run(c)},250)});
+      setTimeout(function(){el.classList.remove('rv','in')},1100);
+    });
+  },{rootMargin:'0px 0px -6% 0px',threshold:.08});
+  els.forEach(function(el){io.observe(el)});
+})();
+</script>
 </body>
 </html>
