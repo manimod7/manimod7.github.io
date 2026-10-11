@@ -8,7 +8,7 @@
 <meta property="og:description" content="Software Engineer at Amazon, previously PayPal.">
 <meta property="og:type" content="website">
 <title>Manish Modwani</title>
-<script>document.documentElement.classList.add("js")</script>
+<script>(function(){var r=document.documentElement,q=Math.random();if(q<.15)r.setAttribute("data-pal","stone");else if(q<.3)r.setAttribute("data-pal","paper");r.classList.add("js");})()</script>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%232a1e14'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Arial,sans-serif' font-weight='800' font-size='28' fill='%23fe8b40'%3EMM%3C/text%3E%3C/svg%3E">
 <meta name="theme-color" content="#f6efe2" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#100e0c" media="(prefers-color-scheme: dark)">
@@ -431,6 +431,13 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
 }
 
 @media (hover:hover) and (prefers-reduced-motion:no-preference){li:hover::marker{color:var(--accent)}}
+/* alternate palettes: Stone and Paper, 15% of visits each (see the head script) */
+html:root[data-pal="paper"]{--bg:#F4F1EA;--surface:#FBF9F4;--surface2:#E8E3D8;--line:#DDD7CA;--ink:#1C1B19;--muted:#625D53;--accent:#1C1B19;--accent-ink:#FFFFFF;--accent-soft:#dcdad5;}
+@media (prefers-color-scheme: dark){html:root[data-pal="paper"]:not([data-theme="light"]){--bg:#11100E;--surface:#181714;--surface2:#201E1B;--line:#2B2925;--ink:#EDE8DE;--muted:#A29C90;--accent:#EDE8DE;--accent-ink:#11100E;--accent-soft:#43413c;}}
+html:root[data-pal="paper"][data-theme="dark"]{--bg:#11100E;--surface:#181714;--surface2:#201E1B;--line:#2B2925;--ink:#EDE8DE;--muted:#A29C90;--accent:#EDE8DE;--accent-ink:#11100E;--accent-soft:#43413c;}
+html:root[data-pal="stone"]{--bg:#EFEBE4;--surface:#F9F7F3;--surface2:#E2DCD2;--line:#D7D0C4;--ink:#2B2620;--muted:#655D53;--accent:#57534E;--accent-ink:#FFFFFF;--accent-soft:#e2e0dc;}
+@media (prefers-color-scheme: dark){html:root[data-pal="stone"]:not([data-theme="light"]){--bg:#13110F;--surface:#1A1816;--surface2:#22201D;--line:#2D2A26;--ink:#EFEBE4;--muted:#A8A097;--accent:#D6D3D1;--accent-ink:#13110F;--accent-soft:#403d3b;}}
+html:root[data-pal="stone"][data-theme="dark"]{--bg:#13110F;--surface:#1A1816;--surface2:#22201D;--line:#2D2A26;--ink:#EFEBE4;--muted:#A8A097;--accent:#D6D3D1;--accent-ink:#13110F;--accent-soft:#403d3b;}
 </style>
 </head>
 <body>
