@@ -438,6 +438,18 @@ html:root[data-pal="paper"][data-theme="dark"]{--bg:#11100E;--surface:#181714;--
 html:root[data-pal="stone"]{--bg:#EFEBE4;--surface:#F9F7F3;--surface2:#E2DCD2;--line:#D7D0C4;--ink:#2B2620;--muted:#655D53;--accent:#57534E;--accent-ink:#FFFFFF;--accent-soft:#e2e0dc;}
 @media (prefers-color-scheme: dark){html:root[data-pal="stone"]:not([data-theme="light"]){--bg:#13110F;--surface:#1A1816;--surface2:#22201D;--line:#2D2A26;--ink:#EFEBE4;--muted:#A8A097;--accent:#D6D3D1;--accent-ink:#13110F;--accent-soft:#403d3b;}}
 html:root[data-pal="stone"][data-theme="dark"]{--bg:#13110F;--surface:#1A1816;--surface2:#22201D;--line:#2D2A26;--ink:#EFEBE4;--muted:#A8A097;--accent:#D6D3D1;--accent-ink:#13110F;--accent-soft:#403d3b;}
+
+/* Ledger Run: a small endless runner, in the spirit of the offline dinosaur */
+.lrun{margin-top:22px;padding:18px 18px 14px}
+.lr-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px 16px;flex-wrap:wrap;margin-bottom:10px}
+.lr-h h2{font-family:var(--display);font-size:18px;letter-spacing:-.01em;margin:0}
+.lr-h p{margin:2px 0 0;color:var(--muted);font-size:13px}
+.lr-score{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.lr-score b{color:var(--ink);font-weight:600}
+.lrun canvas{display:block;width:100%;height:170px;border-radius:14px;background:color-mix(in srgb,var(--surface2) 55%,var(--surface));cursor:pointer;touch-action:manipulation;outline:none}
+.lrun canvas:focus-visible{box-shadow:0 0 0 2px var(--accent)}
+.lrun canvas.ptr:focus-visible{box-shadow:none}
+.lr-k{margin:8px 2px 0;font-family:var(--mono);font-size:11px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -734,6 +746,15 @@ html:root[data-pal="stone"][data-theme="dark"]{--bg:#13110F;--surface:#1A1816;--
     </div>
   </section>
 
+  <section class="card lrun" id="lrun" aria-labelledby="lr-h">
+    <div class="lr-h">
+      <div><h2 id="lr-h">Ledger Run</h2><p>Off the clock. Keep the coin moving and dodge the bad records.</p></div>
+      <div class="lr-score" aria-live="off"><span id="lr-s">₹0</span> reconciled · best <b id="lr-hi">₹0</b></div>
+    </div>
+    <canvas id="lr-c" tabindex="0" role="img" aria-label="Ledger Run game. Press Space, the up arrow or tap to jump over failed records."></canvas>
+    <p class="lr-k">Space, ↑ or tap to jump · hold for a higher jump</p>
+  </section>
+
   <footer><span>Manish Modwani</span><span>Bangalore, India</span></footer>
 <button class="totop" id="totop" type="button" aria-label="Back to top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 </main>
@@ -926,6 +947,103 @@ html:root[data-pal="stone"][data-theme="dark"]{--bg:#13110F;--surface:#1A1816;--
     var t=e.target;if(!t||t.nodeType!==1||!t.classList.contains("hot"))return;
     t.classList.remove("hot");t.classList.add("cool");setTimeout(function(){t.classList.remove("cool");},320);
   },{passive:true});
+})();
+</script>
+
+<script>
+/* Ledger Run: endless runner. Coin = you, blocks = bad records, "timeout" = flies by high. */
+(function(){
+  var cv=document.getElementById("lr-c");if(!cv||!cv.getContext)return;
+  var ctx=cv.getContext("2d"),sEl=document.getElementById("lr-s"),hEl=document.getElementById("lr-hi"),card=document.getElementById("lrun");
+  var W=0,H=170,dpr=1,G=0,col={};
+  var LABELS=["ERR","NULL","DUP","500","429","NaN","-0.01"];
+  var st="idle",t0=0,last=0,dist=0,speed=.34,hold=false,score=0,hi=0,raf=0,visible=true,obs=[],dust=[],nextGap=0,shake=0;
+  var P={x:46,r:12,y:0,vy:0,ang:0,ground:true};
+  try{hi=+localStorage.getItem("mm-run-hi")||0;}catch(e){}
+  function fmt(n){return "₹"+Math.floor(n).toLocaleString("en-IN");}
+  hEl.textContent=fmt(hi);
+  function colors(){var c=getComputedStyle(document.documentElement);col={ink:c.getPropertyValue("--ink").trim()||"#222",muted:c.getPropertyValue("--muted").trim()||"#777",line:c.getPropertyValue("--line").trim()||"#ddd",acc:c.getPropertyValue("--accent").trim()||"#c2410c",soft:c.getPropertyValue("--accent-soft").trim()||"#f9e1c8",surf:c.getPropertyValue("--surface").trim()||"#fff"};}
+  function size(){var r=cv.getBoundingClientRect();dpr=Math.min(2,window.devicePixelRatio||1);W=Math.max(260,r.width);cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);G=H-30;if(P.ground)P.y=G-P.r;draw();}
+  function reset(){obs=[];dust=[];dist=0;score=0;speed=.34;P.y=G-P.r;P.vy=0;P.ground=true;nextGap=420;sEl.textContent=fmt(0);}
+  function jump(){if(st!=="run"){start();return;}if(P.ground){P.vy=-.62;P.ground=false;for(var i=0;i<5;i++)dust.push({x:P.x-4,y:G,vx:-(Math.random()*.12+.04),vy:-Math.random()*.08,l:260});}}
+  function start(){colors();reset();st="run";last=performance.now();loop(last);}
+  function over(){st="over";shake=180;sEl.textContent=fmt(score);if(score>hi){hi=score;hEl.textContent=fmt(hi);try{localStorage.setItem("mm-run-hi",String(Math.floor(hi)));}catch(e){}}draw();}
+  function spawn(){
+    var fly=dist>900&&Math.random()<.28;
+    if(fly){obs.push({x:W+20,w:58,h:18,y:G-64-(Math.random()<.5?0:10),fly:true,t:"timeout"});}
+    else{var n=Math.random()<.25&&dist>600?2:1,h=20+Math.random()*16,w=n*20+(n-1)*4;obs.push({x:W+20,w:w,h:h,y:G-h,fly:false,t:LABELS[Math.floor(Math.random()*LABELS.length)],n:n});}
+    nextGap=speed*(560+Math.random()*700)+(fly?60:0);
+  }
+  function hit(o){var cx=P.x,cy=P.y,r=P.r-2.5,nx=Math.max(o.x,Math.min(cx,o.x+o.w)),ny=Math.max(o.y,Math.min(cy,o.y+o.h));return (cx-nx)*(cx-nx)+(cy-ny)*(cy-ny)<r*r;}
+  function step(dt){
+    speed=Math.min(.82,speed+dt*.0000075);
+    var dx=speed*dt;dist+=dx;score=dist/3;
+    if(!P.ground){var g=(hold&&P.vy<0)?.0016:.0029;P.vy+=g*dt;P.y+=P.vy*dt;if(P.y>=G-P.r){P.y=G-P.r;P.vy=0;P.ground=true;}}
+    P.ang+=dx/P.r;
+    nextGap-=dx;if(nextGap<=0)spawn();
+    for(var i=obs.length-1;i>=0;i--){var o=obs[i];o.x-=dx*(o.fly?1.12:1);if(o.x+o.w<-10)obs.splice(i,1);else if(hit(o)){over();return;}}
+    for(var j=dust.length-1;j>=0;j--){var d=dust[j];d.x+=d.vx*dt-dx*.4;d.y+=d.vy*dt;d.l-=dt;if(d.l<=0)dust.splice(j,1);}
+    sEl.textContent=fmt(score);
+  }
+  function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+  function draw(){
+    if(!W)return;if(!col.ink)colors();
+    ctx.save();ctx.clearRect(0,0,W,H);
+    if(shake>0){ctx.translate((Math.random()-.5)*3,0);}
+    /* ground with moving ticks */
+    ctx.strokeStyle=col.line;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(0,G+.5);ctx.lineTo(W,G+.5);ctx.stroke();
+    ctx.fillStyle=col.muted;ctx.globalAlpha=.35;var off=dist%46;for(var x=-off;x<W;x+=46){ctx.fillRect(x,G+7,10,1.5);ctx.fillRect(x+23,G+13,4,1.5);}ctx.globalAlpha=1;
+    /* obstacles */
+    ctx.font="600 9px 'JetBrains Mono',ui-monospace,monospace";ctx.textAlign="center";ctx.textBaseline="middle";
+    obs.forEach(function(o){
+      if(o.fly){rr(o.x,o.y,o.w,o.h,9);ctx.fillStyle=col.soft;ctx.fill();ctx.strokeStyle=col.acc;ctx.lineWidth=1.2;ctx.stroke();ctx.fillStyle=col.acc;ctx.fillText(o.t,o.x+o.w/2,o.y+o.h/2+.5);}
+      else{for(var k=0;k<o.n;k++){var bx=o.x+k*24;rr(bx,o.y,20,o.h,4);ctx.fillStyle=col.ink;ctx.fill();}ctx.fillStyle=col.surf;ctx.save();ctx.translate(o.x+10,o.y+o.h/2);ctx.rotate(-Math.PI/2);ctx.fillText(o.t,0,.5);ctx.restore();}
+    });
+    /* dust */
+    ctx.fillStyle=col.muted;dust.forEach(function(d){ctx.globalAlpha=Math.max(0,d.l/260)*.6;ctx.fillRect(d.x,d.y,2,2);});ctx.globalAlpha=1;
+    /* coin */
+    ctx.save();ctx.translate(P.x,P.y);
+    ctx.beginPath();ctx.arc(0,0,P.r,0,Math.PI*2);ctx.fillStyle=col.acc;ctx.fill();
+    ctx.beginPath();ctx.arc(0,0,P.r-3,0,Math.PI*2);ctx.strokeStyle=col.surf;ctx.globalAlpha=.55;ctx.lineWidth=1.2;ctx.stroke();ctx.globalAlpha=1;
+    ctx.rotate(P.ang);ctx.fillStyle=col.surf;ctx.font="700 13px system-ui,sans-serif";ctx.fillText("₹",0,1);
+    ctx.restore();
+    /* shadow */
+    var sh=Math.max(.2,1-(G-P.r-P.y)/90);ctx.fillStyle=col.ink;ctx.globalAlpha=.12*sh;ctx.beginPath();ctx.ellipse(P.x,G+2,P.r*sh,2.5,0,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+    /* overlays */
+    if(st!=="run"){ctx.fillStyle=col.ink;ctx.font="600 13px system-ui,sans-serif";ctx.textAlign="center";
+      var msg=st==="over"?"Reconciliation failed. Space or tap to retry.":"Press Space or tap to start";
+      var bw=Math.min(W-24,ctx.measureText(msg).width+40),bh=st==="over"?50:32;ctx.globalAlpha=.92;rr(W/2+20-bw/2,G/2-6-bh/2+(st==="over"?10:0),bw,bh,10);ctx.fillStyle=col.surf;ctx.fill();ctx.globalAlpha=1;ctx.fillStyle=col.ink;
+      ctx.fillText(msg,W/2+20,G/2-6);
+      if(st==="over"){ctx.fillStyle=col.muted;ctx.font="500 12px system-ui,sans-serif";ctx.fillText(fmt(score)+" reconciled"+(score>=hi&&score>0?" · new best":""),W/2+20,G/2+14);}
+    }
+    ctx.restore();
+  }
+  function loop(now){
+    cancelAnimationFrame(raf);
+    var dt=Math.min(40,now-last);last=now;
+    if(st==="run"&&visible&&!document.hidden){step(dt);}
+    if(shake>0)shake-=dt;
+    draw();
+    if(st==="run"||shake>0)raf=requestAnimationFrame(loop);
+  }
+  /* input */
+  cv.addEventListener("blur",function(){cv.classList.remove("ptr");});
+  cv.addEventListener("pointerdown",function(e){e.preventDefault();cv.classList.add("ptr");cv.focus({preventScroll:true});hold=true;jump();});
+  window.addEventListener("pointerup",function(){hold=false;});
+  document.addEventListener("keydown",function(e){
+    if(e.key!==" "&&e.key!=="ArrowUp")return;
+    var active=document.activeElement===cv||(st==="run"&&visible);
+    if(!active)return;
+    e.preventDefault();if(!e.repeat){hold=true;jump();}
+  });
+  document.addEventListener("keyup",function(e){if(e.key===" "||e.key==="ArrowUp")hold=false;});
+  /* pause when off screen, refresh colours on theme change */
+  if("IntersectionObserver" in window){new IntersectionObserver(function(es){visible=es[0].isIntersecting;if(visible&&st==="run"){last=performance.now();loop(last);}},{threshold:.2}).observe(cv);}
+  new MutationObserver(function(){colors();draw();}).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme","data-pal"]});
+  if(window.matchMedia)matchMedia("(prefers-color-scheme: dark)").addEventListener("change",function(){colors();draw();});
+  window.addEventListener("resize",size);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){colors();size();});
+  colors();size();
 })();
 </script>
 </body>
