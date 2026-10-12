@@ -751,8 +751,8 @@ html:root[data-pal="stone"][data-theme="dark"]{--bg:#13110F;--surface:#1A1816;--
       <div><h2 id="lr-h">Ledger Run</h2><p>Off the clock. Keep the coin moving and dodge the bad records.</p></div>
       <div class="lr-score" aria-live="off"><span id="lr-s">₹0</span> reconciled · best <b id="lr-hi">₹0</b></div>
     </div>
-    <canvas id="lr-c" tabindex="0" role="img" aria-label="Ledger Run game. Press Space, the up arrow or tap to jump over failed records."></canvas>
-    <p class="lr-k">Space, ↑ or tap to jump · hold for a higher jump</p>
+    <canvas id="lr-c" tabindex="0" role="img" aria-label="Ledger Run game. Tap, click, or press Space, the up arrow or Enter to jump over failed records."></canvas>
+    <p class="lr-k">Tap, click, Space, ↑ or Enter to jump · hold for a higher jump</p>
   </section>
 
   <footer><span>Manish Modwani</span><span>Bangalore, India</span></footer>
@@ -1028,15 +1028,20 @@ html:root[data-pal="stone"][data-theme="dark"]{--bg:#13110F;--surface:#1A1816;--
   }
   /* input */
   cv.addEventListener("blur",function(){cv.classList.remove("ptr");});
-  cv.addEventListener("pointerdown",function(e){e.preventDefault();cv.classList.add("ptr");cv.focus({preventScroll:true});hold=true;jump();});
-  window.addEventListener("pointerup",function(){hold=false;});
+  cv.addEventListener("pointerdown",function(e){if(e.pointerType==="mouse"&&e.button!==0)return;e.preventDefault();cv.classList.add("ptr");cv.focus({preventScroll:true});hold=true;jump();});
+  window.addEventListener("pointerup",function(){hold=false;});window.addEventListener("pointercancel",function(){hold=false;});cv.addEventListener("contextmenu",function(e){e.preventDefault();});
   document.addEventListener("keydown",function(e){
-    if(e.key!==" "&&e.key!=="ArrowUp")return;
-    var active=document.activeElement===cv||(st==="run"&&visible);
+    var k=e.key,jumpKey=k===" "||k==="ArrowUp"||k==="w"||k==="W",okKey=k==="Enter"||k==="Select"||k==="MediaPlayPause";
+    if(!jumpKey&&!okKey)return;
+    var focused=document.activeElement===cv,active=focused||(jumpKey&&st==="run"&&visible);
     if(!active)return;
     e.preventDefault();if(!e.repeat){hold=true;jump();}
   });
-  document.addEventListener("keyup",function(e){if(e.key===" "||e.key==="ArrowUp")hold=false;});
+  document.addEventListener("keyup",function(e){hold=false;});
+  /* game controllers and some TV remotes: button A / OK */
+  var padDown=false;
+  function pad(){var gp=navigator.getGamepads?navigator.getGamepads():[];for(var i=0;i<gp.length;i++){var g=gp[i];if(!g)continue;var b=g.buttons[0]&&g.buttons[0].pressed||g.buttons[12]&&g.buttons[12].pressed;if(b&&!padDown&&visible){hold=true;jump();}if(!b&&padDown)hold=false;padDown=b;return;}}
+  window.addEventListener("gamepadconnected",function(){(function poll(){pad();requestAnimationFrame(poll);})();});
   /* pause when off screen, refresh colours on theme change */
   if("IntersectionObserver" in window){new IntersectionObserver(function(es){visible=es[0].isIntersecting;if(visible&&st==="run"){last=performance.now();loop(last);}},{threshold:.2}).observe(cv);}
   new MutationObserver(function(){colors();draw();}).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme","data-pal"]});
