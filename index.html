@@ -443,6 +443,11 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
 .lrun canvas:focus-visible{box-shadow:0 0 0 2px var(--accent)}
 .lrun canvas.ptr:focus-visible{box-shadow:none}
 .lr-k{margin:8px 2px 0;font-family:var(--mono);font-size:11px;color:var(--muted)}
+
+/* brand colours for link icons */
+.ic-li{color:#0A66C2}
+:root[data-theme="dark"] .ic-li{color:#4A9BE8}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .ic-li{color:#4A9BE8}}
 </style>
 </head>
 <body>
@@ -475,9 +480,9 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
     </div>
     <div class="links">
       <a class="pill main" href="#contact">Get in touch <small>↓</small></a>
-      <a class="pill" href="https://www.linkedin.com/in/manish-modwani" target="_blank" rel="noopener"><span class="pl"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LinkedIn</span> <small>↗</small></a>
+      <a class="pill" href="https://www.linkedin.com/in/manish-modwani" target="_blank" rel="noopener"><span class="pl"><svg class="ic-li" viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LinkedIn</span> <small>↗</small></a>
       <a class="pill" href="https://github.com/manimod7" target="_blank" rel="noopener"><span class="pl"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</span> <small>↗</small></a>
-      <a class="pill" href="https://drive.google.com/file/d/1lll7AUaZFtSpJp7dgwjfL5Hzlp9gcXvI/view?usp=sharing" target="_blank" rel="noopener"><span class="pl"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M6 2h8v5h5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM8 12h8v1.6H8zM8 15.6h8v1.6H8z"/><path opacity=".5" d="M14 2l5 5h-5z"/></svg> Resume</span> <small>↗</small></a>
+      <a class="pill" href="https://drive.google.com/file/d/1lll7AUaZFtSpJp7dgwjfL5Hzlp9gcXvI/view?usp=sharing" target="_blank" rel="noopener"><span class="pl"><svg class="ic-res" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path fill="#E5322D" d="M6 2h8l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path fill="#F7A29C" d="M14 2l5 5h-5z"/><path fill="#fff" d="M8 12h8v1.6H8zM8 15.6h8v1.6H8z"/></svg> Resume</span> <small>↗</small></a>
     </div>
   </header>
 
@@ -631,7 +636,7 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
     <div class="sec-h"><h2>Projects</h2><span>tap a project for details · live demos</span></div>
     <div class="proj">
       <article class="card click" data-open="d-chase">
-        <svg class="plogo" viewBox="0 0 48 48" fill="none" aria-hidden="true"><circle cx="24" cy="24" r="20" stroke="var(--accent)" stroke-width="2.4"/><path d="M9 24H39" stroke="var(--muted)" stroke-width="1" opacity=".45"/><path class="cl-line" pathLength="1" d="M9 33C14 33 15 20 20 22S27 31 31 25 35.5 15.5 39 16" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle class="cl-dot" cx="39" cy="16" r="3" fill="var(--accent)"/></svg>
+        <svg class="plogo" viewBox="0 0 48 48" fill="none" aria-hidden="true"><circle class="cl-ground" cx="24" cy="24" r="20" stroke="#2E8B57" stroke-width="2.4"/><path d="M9 24H39" stroke="#C9A66B" stroke-width="1.4" opacity=".8"/><path class="cl-line" pathLength="1" d="M9 33C14 33 15 20 20 22S27 31 31 25 35.5 15.5 39 16" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle class="cl-dot" cx="39" cy="16" r="3" fill="#C8102E"/></svg>
         <div class="top"><div class="label" style="margin:0"><span>Cricket · data and ML</span></div></div>
         <h3>Chase</h3>
         <p>Live win probability for T20 cricket, updated every ball. A calibrated gradient-boosted model trained on IPL ball-by-ball data, with match replay and a what-if panel.</p>
@@ -639,7 +644,7 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
         <div class="acts"><button class="btn main" type="button" data-open="d-chase">View details <small>→</small></button><a class="btn" href="https://manimod7.github.io/chase/" target="_blank" rel="noopener">Live demo <small>↗</small></a></div>
       </article>
       <article class="card click" data-open="d-swinglab">
-        <svg class="plogo" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M5 33C8 40 15 45 23 45" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" opacity=".35"/><path d="M9 24C11 33 18 40 27 41" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" opacity=".6"/><g class="sl-bat" transform="rotate(-30 24 20)"><g transform="translate(24 20) rotate(180) scale(.7) translate(-24 -45)"><rect x="22.4" y="28" width="3.2" height="17" rx="1.6" fill="var(--ink)"/><path d="M19.5 29V11a4.5 4.5 0 0 1 9 0v18z" fill="var(--ink)"/></g></g><circle class="sl-ball" cx="38.5" cy="31.9" r="3.6" fill="var(--accent)"/></svg>
+        <svg class="plogo" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M5 33C8 40 15 45 23 45" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" opacity=".35"/><path d="M9 24C11 33 18 40 27 41" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" opacity=".6"/><g class="sl-bat" transform="rotate(-30 24 20)"><g transform="translate(24 20) rotate(180) scale(.7) translate(-24 -45)"><rect x="22.4" y="28" width="3.2" height="17" rx="1.6" style="fill:color-mix(in srgb,var(--ink) 82%,#7a4a22)"/><path d="M19.5 29V11a4.5 4.5 0 0 1 9 0v18z" fill="#D9B27C" stroke="#A9793F" stroke-width=".8"/><path d="M24 13V27" stroke="#B88A50" stroke-width=".7" opacity=".7"/></g></g><g class="sl-ball"><circle cx="38.5" cy="31.9" r="3.6" fill="#C8102E"/><path d="M35.9 29.6Q38.1 31.5 41.1 34.2" stroke="#F6E7D2" stroke-width=".75" stroke-dasharray="1 .6" fill="none"/></g></svg>
         <div class="top"><div class="label" style="margin:0"><span>Cricket · VR and hardware</span></div></div>
         <h3>SwingLab</h3>
         <p>A VR batting lab built around my 3D-printed Quest 3 cricket bat. It tracks the controller in WebXR, measures each swing and scores it in a virtual drill.</p>
@@ -733,9 +738,9 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
       <p>Backend, payments, data platforms and financial systems. Email is the fastest way to reach me.</p>
     </div>
     <div class="mail">
-      <div class="addr"><svg class="gm" viewBox="52 42 88 66" aria-hidden="true"><g fill="currentColor"><path opacity=".78" d="M58 108h14V74L52 59v43c0 3.32 2.69 6 6 6"/><path opacity=".78" d="M120 108h14c3.32 0 6-2.69 6-6V59l-20 15"/><path opacity=".55" d="M120 48v26l20-15v-8c0-7.42-8.47-11.65-14.4-7.2"/><path d="M72 74V48l24 18 24-18v26L96 92"/><path opacity=".55" d="M52 51v8l20 15V48l-5.6-4.2c-5.94-4.45-14.4-.22-14.4 7.2"/></g></svg><code id="addr">manimod7@gmail.com</code></div>
+      <div class="addr"><svg class="gm" viewBox="52 42 88 66" aria-hidden="true"><g><path fill="#4285F4" d="M58 108h14V74L52 59v43c0 3.32 2.69 6 6 6"/><path fill="#34A853" d="M120 108h14c3.32 0 6-2.69 6-6V59l-20 15"/><path fill="#FBBC04" d="M120 48v26l20-15v-8c0-7.42-8.47-11.65-14.4-7.2"/><path fill="#EA4335" d="M72 74V48l24 18 24-18v26L96 92"/><path fill="#C5221F" d="M52 51v8l20 15V48l-5.6-4.2c-5.94-4.45-14.4-.22-14.4 7.2"/></g></svg><code id="addr">manimod7@gmail.com</code></div>
       <button type="button" id="copy">Copy email</button>
-      <a href="https://www.linkedin.com/in/manish-modwani" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> Message on LinkedIn ↗</a>
+      <a href="https://www.linkedin.com/in/manish-modwani" target="_blank" rel="noopener"><svg class="ic-li" viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> Message on LinkedIn ↗</a>
     </div>
   </section>
 
