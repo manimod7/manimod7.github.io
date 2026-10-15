@@ -1,0 +1,926 @@
+<meta charset="utf-8">
+<title>Freshness Radar PRD</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="A product requirements doc for Trupeer by Moulshree Bhutra: find the guide steps that went stale after a release and fix only those.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#f7f6f2; --paper:#ffffff; --cream:#fffcf3; --sunk:#f0eee8; --line:#e7e3da; --line2:#d9d3c6;
+  --ink:#1b1a18; --ink2:#4a4641; --mute:#8a847b;
+  --rose:#8e5b5a; --rose-ink:#7a3f3e; --rose-soft:#f3e6e3; --rose-line:#e8cfcb; --blush:#c19b90;
+  --app:#6b5cf6; --app-soft:#eeebff;
+  --hl:#fff1c9;
+  --fresh:#2f7d55; --fresh-soft:#e3f2e9; --stale:#b4472f; --stale-soft:#fbe7e1; --review:#a8700f; --review-soft:#fbf0d6;
+  --shadow:0 1px 2px rgba(40,30,20,.05),0 8px 28px -12px rgba(60,40,30,.18);
+  --g1:#f1c9bd; --g2:#cfe0c3; --g3:#f6e2b8; --g4:#c9d8ea;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#14120f; --paper:#1d1a16; --cream:#221e19; --sunk:#191612; --line:#2e2a24; --line2:#3b352d;
+  --ink:#f2eee6; --ink2:#c9c2b6; --mute:#8f887c;
+  --rose:#c98d86; --rose-ink:#e2aaa2; --rose-soft:#2c2120; --rose-line:#4a3431; --blush:#a77f75;
+  --app:#9b90ff; --app-soft:#25213d; --hl:#3a3018;
+  --fresh:#6cc495; --fresh-soft:#1a2a21; --stale:#ef8a72; --stale-soft:#33201b; --review:#e0b45a; --review-soft:#30281a;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -12px rgba(0,0,0,.6);
+  --g1:#5a3a33; --g2:#2f4030; --g3:#4d4027; --g4:#2b3a4d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14120f; --paper:#1d1a16; --cream:#221e19; --sunk:#191612; --line:#2e2a24; --line2:#3b352d;
+  --ink:#f2eee6; --ink2:#c9c2b6; --mute:#8f887c;
+  --rose:#c98d86; --rose-ink:#e2aaa2; --rose-soft:#2c2120; --rose-line:#4a3431; --blush:#a77f75;
+  --app:#9b90ff; --app-soft:#25213d; --hl:#3a3018;
+  --fresh:#6cc495; --fresh-soft:#1a2a21; --stale:#ef8a72; --stale-soft:#33201b; --review:#e0b45a; --review-soft:#30281a;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -12px rgba(0,0,0,.6);
+  --g1:#5a3a33; --g2:#2f4030; --g3:#4d4027; --g4:#2b3a4d; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:15.5px/1.6 var(--sans);-webkit-font-smoothing:antialiased;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:var(--rose-ink);text-underline-offset:3px}
+h1,h2,h3{font-family:var(--serif);font-weight:600;color:var(--rose-ink);text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(2.2rem,5.4vw,3.6rem);line-height:1.06}
+h2{font-size:clamp(1.6rem,3.2vw,2.1rem);line-height:1.15}
+h3{font-family:var(--sans);font-size:1.02rem;font-weight:600;color:var(--ink);letter-spacing:0}
+p{margin:0}
+.wrap{max-width:1080px;margin:0 auto}
+.lbl{font:500 .72rem/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.muted{color:var(--mute)}
+.ink2{color:var(--ink2)}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px))) 0;
+  padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));
+  background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:14px}
+.mark{display:flex;align-items:center;gap:9px;font-weight:600;font-size:.95rem;white-space:nowrap}
+.mark i{width:24px;height:24px;border-radius:7px;background:var(--ink);display:grid;place-items:center}
+.mark i svg{width:14px;height:14px;color:var(--bg)}
+.toc{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.toc::-webkit-scrollbar{display:none}
+.toc a{color:var(--ink2);text-decoration:none;font-size:.84rem;padding:6px 10px;border-radius:999px;white-space:nowrap;transition:background .2s,color .2s}
+.toc a:hover,.toc a.on{background:var(--paper);color:var(--ink);box-shadow:var(--shadow)}
+.tbtn{border:1px solid var(--line2);background:var(--paper);color:var(--ink);width:34px;height:34px;border-radius:10px;display:grid;place-items:center;cursor:pointer;flex:none}
+.tbtn svg{width:16px;height:16px}
+
+/* painterly backdrop like Trupeer's blurred photography */
+.paint{position:absolute;inset:0;overflow:hidden;border-radius:inherit;z-index:0}
+.paint:before{content:"";position:absolute;inset:-20%;filter:blur(38px) saturate(1.05);
+  background:radial-gradient(40% 50% at 18% 30%,var(--g1),transparent 70%),radial-gradient(35% 45% at 70% 25%,var(--g3),transparent 70%),
+  radial-gradient(45% 55% at 82% 78%,var(--g2),transparent 70%),radial-gradient(40% 45% at 30% 85%,var(--g4),transparent 70%),var(--cream);
+  transform:rotate(-8deg)}
+.paint:after{content:"";position:absolute;inset:0;opacity:.35;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E")}
+
+/* hero */
+.hero{position:relative;border-radius:28px;margin:22px 0 0;padding:clamp(28px,6vw,64px) clamp(20px,5vw,56px);overflow:hidden}
+.hero>*:not(.paint){position:relative;z-index:1}
+.chip{display:inline-flex;align-items:center;gap:8px;background:var(--paper);border:1px solid var(--rose-line);color:var(--rose-ink);
+  border-radius:999px;padding:5px 12px 5px 6px;font-size:.8rem;font-weight:500;box-shadow:var(--shadow)}
+.chip b{background:var(--rose);color:#fff;border-radius:999px;padding:2px 8px;font-weight:600;font-size:.72rem}
+.hero h1{margin:18px 0 14px;max-width:16ch}
+.hero .sub{font-size:clamp(1.02rem,1.8vw,1.18rem);color:var(--ink2);max-width:58ch}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:28px;box-shadow:var(--shadow)}
+.meta div{background:var(--paper);padding:12px 14px}
+.meta b{display:block;font-weight:600;font-size:.92rem;margin-top:3px}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:12px;padding:10px 16px;font:600 .9rem var(--sans);text-decoration:none;cursor:pointer;border:1px solid transparent;transition:transform .15s,box-shadow .2s,background .2s}
+.btn:hover{transform:translateY(-1px)}
+.btn.pri{background:var(--rose);color:#fff;box-shadow:0 6px 18px -8px var(--rose)}
+.btn.sec{background:var(--paper);color:var(--ink);border-color:var(--line2)}
+
+/* sections */
+section.s{padding:64px 0 8px;scroll-margin-top:60px}
+.sh{display:grid;gap:10px;margin-bottom:26px;max-width:66ch}
+.sh .n{font:500 .78rem var(--mono);color:var(--rose)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow);transition:border-color .2s,transform .2s}
+.card:hover{border-color:var(--rose-line)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px}
+.grid2>*,.grid3>*{min-width:0}
+.prose{max-width:68ch;display:grid;gap:14px;color:var(--ink2)}
+.prose strong{color:var(--ink)}
+.callout{border-left:3px solid var(--rose);background:var(--rose-soft);padding:14px 16px;border-radius:0 12px 12px 0;color:var(--ink)}
+mark{background:var(--hl);color:inherit;padding:0 3px;border-radius:4px}
+
+/* evidence */
+.bars{display:grid;gap:12px}
+.bar{display:grid;grid-template-columns:minmax(0,180px) 1fr 34px;gap:12px;align-items:center;font-size:.9rem}
+.bar .t{height:12px;border-radius:99px;background:var(--sunk);overflow:hidden}
+.bar .t i{display:block;height:100%;border-radius:99px;background:var(--rose);width:0;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.bar.hot .t i{background:var(--stale)}
+.bar b{font:500 .85rem var(--mono);text-align:right}
+.quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px}
+.q{background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;gap:10px;align-content:space-between}
+.q p{font-family:var(--serif);font-size:1.06rem;line-height:1.4;color:var(--ink)}
+.q small{color:var(--mute);font-size:.78rem}
+.tag{display:inline-flex;align-items:center;gap:6px;font:500 .7rem var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--sunk);color:var(--ink2);width:fit-content;max-width:100%}
+.tag.st{background:var(--stale-soft);color:var(--stale)}
+.tag.fr{background:var(--fresh-soft);color:var(--fresh)}
+.tag.rw{background:var(--review-soft);color:var(--review)}
+.tag.ap{background:var(--app-soft);color:var(--app)}
+
+/* timeline */
+.tl{display:grid;gap:0;border-left:2px solid var(--line2);margin-left:6px}
+.tl div{position:relative;padding:0 0 18px 22px}
+.tl div:before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--paper);border:2px solid var(--rose)}
+.tl div.gap:before{background:var(--stale);border-color:var(--stale)}
+.tl .d{font:500 .74rem var(--mono);color:var(--mute)}
+.tl p{color:var(--ink2);font-size:.92rem}
+
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:var(--paper);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:.9rem}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 .72rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute);background:var(--cream)}
+tr:last-child td{border-bottom:0}
+tbody tr{transition:background .15s}
+tbody tr:hover{background:var(--cream)}
+.p0{color:var(--stale);font-weight:600}.p1{color:var(--review);font-weight:600}.p2{color:var(--mute);font-weight:600}
+
+/* ===== prototype (app chrome mirrors Trupeer's editor) ===== */
+.stage{position:relative;border-radius:28px;padding:clamp(12px,3vw,34px);overflow:hidden}
+.app{position:relative;z-index:1;background:var(--paper);border-radius:18px;box-shadow:0 30px 60px -30px rgba(50,30,20,.45),0 0 0 1px var(--line);overflow:hidden;display:grid;grid-template-columns:200px minmax(0,1fr)}
+.side{background:var(--cream);border-right:1px solid var(--line);padding:14px 10px;display:flex;flex-direction:column;gap:2px}
+.ws{display:flex;align-items:center;gap:8px;padding:6px 8px 14px;font-weight:600;font-size:.88rem}
+.ws i{width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,#f0a58f,#8e5b5a);display:grid;place-items:center;color:#fff;font:700 .7rem var(--sans);font-style:normal}
+.nav{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;font-size:.86rem;color:var(--ink2);cursor:pointer;border:0;background:none;text-align:left;width:100%;font-family:inherit}
+.nav svg{width:16px;height:16px;flex:none;opacity:.8}
+.nav:hover{background:var(--paper)}
+.nav.on{background:var(--paper);color:var(--ink);font-weight:600;box-shadow:0 1px 0 var(--line)}
+.nav .ct{margin-left:auto;font:600 .68rem var(--mono);background:var(--stale);color:#fff;border-radius:99px;padding:1px 6px}
+.nav .ct.z{background:var(--fresh)}
+.side .new{margin-top:auto;font:500 .68rem var(--mono);color:var(--mute);padding:8px 10px}
+.main{min-width:0;display:flex;flex-direction:column}
+.bar1{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.seg{display:inline-flex;background:var(--sunk);border-radius:10px;padding:3px}
+.seg button{border:0;background:none;font:500 .8rem var(--sans);color:var(--ink2);padding:6px 12px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:6px}
+.seg button.on{background:var(--app);color:#fff;box-shadow:0 2px 8px -2px var(--app)}
+.bar1 .r{margin-left:auto;display:flex;gap:8px;align-items:center}
+.av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#c9b4e8,#8e7bd6);display:grid;place-items:center;font:600 .66rem var(--sans);color:#fff}
+.view{padding:16px;display:grid;gap:14px;min-height:540px;align-content:start}
+.rel{display:flex;gap:12px;align-items:center;background:var(--app-soft);border:1px solid color-mix(in srgb,var(--app) 25%,transparent);border-radius:12px;padding:10px 12px;font-size:.86rem}
+.rel svg{width:18px;height:18px;color:var(--app);flex:none}
+.rel b{font-weight:600}
+.top2{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:center}
+.ring{width:110px;height:110px;position:relative}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .v{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.ring .v b{font:600 1.6rem var(--sans);line-height:1}
+.ring .v small{display:block;font-size:.66rem;color:var(--mute);margin-top:3px}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.kpi{background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.kpi b{display:block;font:600 1.2rem var(--sans)}
+.kpi span{font-size:.74rem;color:var(--mute)}
+.list{border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.row{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .15s;background:var(--paper)}
+.row:last-child{border-bottom:0}
+.row:hover{background:var(--cream)}
+.row.sel{background:var(--rose-soft)}
+.th{width:44px;height:30px;border-radius:6px;background:linear-gradient(135deg,var(--g4),var(--g1));position:relative;overflow:hidden}
+.th:after{content:"";position:absolute;left:50%;top:50%;width:0;height:0;border-left:7px solid #fff;border-top:5px solid transparent;border-bottom:5px solid transparent;transform:translate(-40%,-50%)}
+.row h4{margin:0;font-size:.88rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .sm{font-size:.74rem;color:var(--mute)}
+.detail{display:grid;gap:12px}
+.back{border:0;background:none;color:var(--ink2);font:500 .82rem var(--sans);cursor:pointer;display:inline-flex;gap:6px;align-items:center;padding:0;width:max-content}
+.tabs{display:flex;gap:16px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.tabs span{font-size:.82rem;color:var(--mute);padding:8px 0;white-space:nowrap;border-bottom:2px solid transparent}
+.tabs span.on{color:var(--app);border-color:var(--app);font-weight:600}
+.steps{display:grid;gap:8px}
+.step{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:10px;align-items:start;padding:10px;border-radius:12px;border:1px solid var(--line);background:var(--paper);cursor:pointer;transition:border-color .2s,background .2s}
+.step:hover{border-color:var(--line2)}
+.step.open{border-color:var(--stale);background:var(--stale-soft)}
+.step.open.rvw{border-color:var(--review);background:var(--review-soft)}
+.step .ts{font:500 .72rem var(--mono);color:var(--mute);padding-top:2px}
+.step p{font-size:.86rem;color:var(--ink)}
+.step p mark{background:var(--hl)}
+.diff{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.mock{border:1px solid var(--line);border-radius:12px;background:var(--cream);padding:10px;display:grid;gap:8px}
+.mock .lbl{font-size:.64rem}
+.mscreen{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px;display:grid;gap:7px;font-size:.74rem;min-height:120px}
+.mrow{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.mbar{height:6px;border-radius:9px;background:var(--sunk)}
+.mbtn{font:600 .7rem var(--sans);padding:5px 9px;border-radius:7px;background:var(--ink);color:var(--paper);white-space:nowrap}
+.mbtn.ghost{background:var(--sunk);color:var(--ink2)}
+.ring-hl{outline:2px solid var(--stale);outline-offset:2px;animation:pulse 1.6s infinite}
+.ring-hl.new{outline-color:var(--fresh)}
+@keyframes pulse{50%{outline-offset:5px}}
+.mfield{border:1px solid var(--line2);border-radius:6px;padding:4px 7px;color:var(--ink2)}
+.why{font-size:.8rem;color:var(--ink2);background:var(--cream);border:1px dashed var(--line2);border-radius:10px;padding:8px 10px}
+.fixes{display:grid;gap:8px}
+.fix{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:12px;cursor:pointer;background:var(--paper);text-align:left;font:inherit;color:inherit;width:100%;transition:border-color .2s,background .2s}
+.fix:hover{border-color:var(--app)}
+.fix.rec{border-color:var(--app);background:var(--app-soft)}
+.fix .dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--line2)}
+.fix.rec .dot{border-color:var(--app);background:radial-gradient(var(--app) 45%,transparent 50%)}
+.fix b{font-size:.86rem;display:block}
+.fix .fd{min-width:0}.fix .fd>span{display:block;font-size:.75rem;color:var(--mute)}
+.fix em{font:500 .7rem var(--mono);font-style:normal;color:var(--ink2);white-space:nowrap}
+.apply{justify-self:start;background:var(--app);color:#fff;border:0;border-radius:10px;padding:10px 16px;font:600 .86rem var(--sans);cursor:pointer;box-shadow:0 6px 16px -8px var(--app)}
+.apply:disabled{opacity:.45;cursor:not-allowed}
+.toast{position:absolute;right:16px;bottom:16px;z-index:5;background:var(--ink);color:var(--paper);border-radius:12px;padding:12px 14px;font-size:.82rem;max-width:320px;box-shadow:0 14px 30px -10px rgba(0,0,0,.4);transform:translateY(20px);opacity:0;pointer-events:none;transition:.3s}
+.toast.on{transform:none;opacity:1}
+.toast ul{margin:6px 0 0;padding-left:16px;opacity:.8}
+.ask{display:grid;gap:10px}
+.bubble{border-radius:14px;padding:10px 12px;font-size:.86rem;max-width:90%}
+.bubble.u{justify-self:end;background:var(--app);color:#fff}
+.bubble.a{background:var(--cream);border:1px solid var(--line)}
+.warnline{display:flex;gap:8px;align-items:flex-start;font-size:.78rem;border-radius:10px;padding:8px 10px;margin-top:8px}
+.warnline.bad{background:var(--stale-soft);color:var(--stale)}
+.warnline.ok{background:var(--fresh-soft);color:var(--fresh)}
+.hint{font:500 .72rem var(--mono);color:var(--mute);text-align:center;margin-top:10px;position:relative;z-index:1}
+.reset{border:1px solid var(--line2);background:var(--paper);color:var(--ink2);border-radius:8px;padding:4px 9px;font:500 .74rem var(--sans);cursor:pointer}
+
+/* why me */
+.me{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.map{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.mi{display:grid;grid-template-columns:minmax(0,.9fr) 18px minmax(0,1.3fr);gap:10px;align-items:center;padding:12px 14px;background:var(--paper);border:1px solid var(--line);border-radius:14px}
+.mi .j{font-size:.84rem;color:var(--mute)}
+.mi .a{font-size:.9rem}
+.mi svg{width:16px;height:16px;color:var(--rose)}
+.copy{border:1px solid var(--line2);background:var(--paper);color:var(--ink);border-radius:8px;padding:3px 9px;font:500 .74rem var(--sans);cursor:pointer;margin-left:6px}
+/* summary grid */
+.scard{display:flex;flex-direction:column;gap:10px;text-decoration:none;color:inherit;position:relative}
+.scard:hover{transform:translateY(-3px);border-color:var(--rose-line)}
+.scard .sn{position:absolute;top:16px;right:18px;font:500 .74rem var(--mono);color:var(--mute)}
+.scard h3{font-family:var(--serif);font-size:1.45rem;color:var(--rose-ink);font-weight:600}
+.scard p{font-size:.9rem}
+.scard ul{margin:0;padding-left:18px;font-size:.88rem;display:grid;gap:4px;color:var(--ink)}
+.scard .go{margin-top:auto;padding-top:6px;font-weight:600;font-size:.86rem;color:var(--rose-ink)}
+.phases{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.phases li{display:grid;grid-template-columns:38px minmax(0,1fr);gap:10px;align-items:start;font-size:.86rem}
+.phases b{font:600 .8rem var(--mono);background:var(--app-soft);color:var(--app);border-radius:8px;padding:5px 0;text-align:center}
+/* 30-60-90 */
+.ninety{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.ninety>*{min-width:0}
+.ph{display:grid;gap:12px;align-content:start}
+.ph .hd{display:flex;align-items:baseline;gap:12px}
+.ph .hd .big{font:600 2.8rem/1 var(--serif);color:var(--rose-ink)}
+.ph .hd span{font-size:.8rem;color:var(--mute)}
+.ph h3{font-size:1.05rem}
+.ph ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:.9rem;color:var(--ink2)}
+.ph .out{border-top:1px dashed var(--line2);padding-top:10px;font-size:.86rem}
+.ph .out b{color:var(--fresh)}
+/* contact band */
+.contact{position:relative;border-radius:28px;overflow:hidden;margin-top:64px;padding:clamp(24px,5vw,48px)}
+.contact>*:not(.paint){position:relative;z-index:1}
+.contact .cin{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px;align-items:center}
+.contact h2{margin:8px 0 10px}
+.links{display:grid;gap:10px}
+.lk{display:flex;align-items:center;gap:12px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 14px;text-decoration:none;color:var(--ink);box-shadow:var(--shadow);transition:transform .15s,border-color .2s;min-width:0}
+.lk:hover{transform:translateY(-2px);border-color:var(--rose-line)}
+.lk svg{width:20px;height:20px;flex:none;color:var(--rose-ink)}
+.lk b{font-size:.92rem;display:block}
+.lk span{font-size:.8rem;color:var(--mute);overflow-wrap:anywhere}
+.lk .copy{margin-left:auto}
+
+/* ===== motion & interaction layer ===== */
+.prog{position:fixed;left:0;right:0;top:0;height:3px;z-index:40;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--rose),var(--app));pointer-events:none}
+.card{background-image:radial-gradient(380px circle at var(--mx,-999px) var(--my,-999px),color-mix(in srgb,var(--rose) 9%,transparent),transparent 65%)}
+.scard{transform-style:preserve-3d;will-change:transform;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .2s,box-shadow .3s}
+.scard:hover{box-shadow:0 2px 4px rgba(40,30,20,.05),0 24px 44px -20px rgba(80,40,30,.35)}
+.scard .go{transition:letter-spacing .25s,color .2s}
+.scard:hover .go{letter-spacing:.02em}
+.stg-i{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s cubic-bezier(.2,.8,.2,1)}
+.in .stg-i,.stg-i.in{opacity:1;transform:none}
+.hero h1 .w{display:inline-block;opacity:0;transform:translateY(.45em) rotate(2deg);filter:blur(6px);animation:wIn .8s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--i)*70ms + 120ms)}
+@keyframes wIn{to{opacity:1;transform:none;filter:none}}
+.hero .sub,.hero .cta,.hero .meta,.hero .chip{animation:fUp .8s cubic-bezier(.2,.8,.2,1) both}
+.hero .chip{animation-delay:.05s}.hero .sub{animation-delay:.45s}.hero .cta{animation-delay:.6s}.hero .meta{animation-delay:.75s}
+@keyframes fUp{from{opacity:0;transform:translateY(14px)}}
+.paint:before{animation:drift 22s ease-in-out infinite alternate}
+@keyframes drift{0%{transform:rotate(-8deg) scale(1)}50%{transform:rotate(-2deg) scale(1.08) translate(2%,-2%)}100%{transform:rotate(-12deg) scale(1.04) translate(-2%,2%)}}
+.hero .paint:before{translate:var(--px,0px) var(--py,0px);transition:translate .8s cubic-bezier(.2,.8,.2,1)}
+.btn.pri{position:relative;overflow:hidden}
+.btn.pri:after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);transform:translateX(-120%);transition:transform .7s}
+.btn.pri:hover:after{transform:translateX(120%)}
+.btn:active,.apply:active,.fix:active,.reset:active{transform:scale(.97)}
+.q{transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .2s}
+.q:hover{transform:translateY(-4px) rotate(-.4deg);box-shadow:var(--shadow);border-color:var(--rose-line)}
+.tl div:before{transition:transform .3s,background .3s}
+.tl div:hover:before{transform:scale(1.35);background:var(--rose)}
+.tl div.gap:before{animation:beat 1.8s infinite}
+@keyframes beat{50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--stale) 25%,transparent)}}
+.bar{transition:transform .2s}.bar:hover{transform:translateX(4px)}
+.mi{transition:transform .25s,border-color .2s,box-shadow .25s}
+.mi:hover{transform:translateX(6px);border-color:var(--rose-line);box-shadow:var(--shadow)}
+.mi svg{transition:transform .25s}.mi:hover svg{transform:translateX(3px)}
+.ph{transition:transform .3s cubic-bezier(.2,.8,.2,1),border-color .2s}
+.ph:hover{transform:translateY(-4px)}
+.ph .hd .big{background:linear-gradient(135deg,var(--rose-ink),var(--app));-webkit-background-clip:text;background-clip:text;color:transparent}
+.ninety{position:relative}
+.lk svg{transition:transform .3s}.lk:hover svg{transform:rotate(-8deg) scale(1.12)}
+.toTop{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;width:42px;height:42px;border-radius:50%;border:1px solid var(--line2);background:var(--paper);color:var(--ink);display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow);opacity:0;transform:translateY(12px);pointer-events:none;transition:.3s}
+.toTop.on{opacity:1;transform:none;pointer-events:auto}
+.toTop svg{width:18px;height:18px}
+.toc a{position:relative}
+/* prototype motion */
+.view.swap{animation:vIn .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes vIn{from{opacity:0;transform:translateY(8px)}}
+.detail{animation:dOpen .4s cubic-bezier(.2,.8,.2,1)}
+@keyframes dOpen{from{opacity:0;transform:translateY(-6px);clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+.step .tag.fr{animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{from{transform:scale(.4);opacity:0}}
+.row{transition:background .15s,transform .2s}.row:hover{transform:translateX(3px)}
+.row .th{transition:transform .25s}.row:hover .th{transform:scale(1.08)}
+.ring.done{animation:done 1.2s cubic-bezier(.2,.8,.2,1)}
+@keyframes done{30%{transform:scale(1.08)}60%{transform:scale(.98)}}
+.burst{position:absolute;left:50%;top:50%;width:6px;height:6px;border-radius:50%;pointer-events:none;animation:burst .9s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes burst{to{transform:translate(var(--dx),var(--dy)) scale(.3);opacity:0}}
+.apply{transition:transform .15s,box-shadow .2s,opacity .2s}
+.apply:hover{box-shadow:0 10px 22px -8px var(--app)}
+.apply.busy{pointer-events:none;opacity:.8}
+.apply.busy:after{content:"";display:inline-block;width:12px;height:12px;margin-left:8px;border:2px solid rgba(255,255,255,.5);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:-2px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.bubble{animation:fUp .4s cubic-bezier(.2,.8,.2,1) both}.bubble.a{animation-delay:.25s}
+.typing{display:inline-flex;gap:4px}.typing i{width:6px;height:6px;border-radius:50%;background:var(--mute);animation:ty 1s infinite}.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes ty{50%{transform:translateY(-4px);opacity:.4}}
+.stg-i.q,.stg-i.mi,.stg-i.ph,.stg-i.scard,.stg-i.card{transition:opacity .55s ease,transform .45s cubic-bezier(.2,.8,.2,1),border-color .2s,box-shadow .3s}
+@media (prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .stg-i{opacity:1;transform:none}.hero h1 .w{opacity:1;transform:none;filter:none}
+}
+footer{padding:56px 0 40px;color:var(--mute);font-size:.82rem;display:grid;gap:10px}
+.src{columns:2 280px;column-gap:28px;font-size:.84rem}
+.src li{break-inside:avoid;margin-bottom:6px}
+
+.rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.ring-hl{animation:none}}
+
+@media (max-width:760px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line);padding:8px;scrollbar-width:none}
+  .side .ws,.side .new{display:none}
+  .nav{width:auto;white-space:nowrap}
+  .top2{grid-template-columns:minmax(0,1fr);justify-items:center}
+  .kpis{width:100%}
+  .diff{grid-template-columns:minmax(0,1fr)}
+  .fix{grid-template-columns:20px minmax(0,1fr)}.fix em{grid-column:2}
+  .view{padding:12px}
+  .mi{grid-template-columns:minmax(0,1fr)}
+  .lk .copy{margin-left:0}
+  .mi svg{transform:rotate(90deg)}
+  .bar{grid-template-columns:minmax(0,1fr) 34px}.bar .t{grid-column:1/-1;grid-row:2}
+}
+</style>
+
+<div class="prog" id="prog"></div>
+<button class="toTop" id="toTop" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
+<header class="top">
+  <div class="wrap">
+    <div class="mark"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M12 12 17 7"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/></svg></i>Freshness Radar</div>
+    <nav class="toc" id="toc">
+      <a href="#problem">Problem</a><a href="#voice">Customer voice</a><a href="#today">What exists</a><a href="#proto">Prototype</a><a href="#reqs">Requirements</a><a href="#metrics">Metrics</a><a href="#plan">Plan</a><a href="#me">Why me</a><a href="#ninety">30-60-90</a><a href="#contact">Contact</a>
+    </nav>
+    <button class="tbtn" id="theme" aria-label="Switch light or dark theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+  </div>
+</header>
+
+<main class="wrap">
+
+<div class="hero">
+  <div class="paint"></div>
+  <span class="chip"><b>PRD</b> A product proposal for Trupeer · by Moulshree Bhutra</span>
+  <h1>Keep every guide true to the product.</h1>
+  <p class="sub">Trupeer makes a guide in minutes. Keeping it right after the next release still takes a re-record. Freshness Radar finds the exact steps that went stale, routes each one to the cheapest fix, and carries that fix to the video, the doc, every translation and Ask Trupeer.</p>
+  <div class="cta">
+    <a class="btn pri" href="#proto">Try the prototype <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <a class="btn sec" href="#voice">Read the evidence</a>
+  </div>
+  <div class="meta">
+    <div><span class="lbl">Author</span><b>Moulshree Bhutra</b></div>
+    <div><span class="lbl">For</span><b>Shivali &amp; Pritish</b></div>
+    <div><span class="lbl">Status</span><b>Proposal · v1</b></div>
+    <div><span class="lbl">Date</span><b>October 2026</b></div>
+    <div><span class="lbl">Ship plan</span><b>4 weekly releases</b></div>
+  </div>
+</div>
+
+<!-- SUMMARY GRID -->
+<section class="s rv" id="tldr" style="padding-top:44px">
+  <div class="grid3 sum">
+    <a class="card scard" href="#problem">
+      <span class="sn">01</span><span class="tag st">What I'd build first</span>
+      <h3>Freshness Radar</h3>
+      <p class="ink2">Trupeer's biggest review complaint (17 of 43 on G2) is updating a guide after the product changes. Radar flags the exact steps that went stale, suggests the cheapest fix, and pushes it to the video, doc, every translation and Ask Trupeer in one approval.</p>
+      <ul><li>Detect stale steps on release day</li><li>Fix one step, not the whole video</li><li>Keep AI answers from going wrong</li></ul>
+      <span class="go">Read the PRD and try it →</span>
+    </a>
+    <a class="card scard" href="#me">
+      <span class="sn">02</span><span class="tag fr">Why I'm a fit</span>
+      <h3>I've done this job</h3>
+      <p class="ink2">Founding APM at Vudio.ai, an AI video startup, working directly with the founder from April 2024.</p>
+      <ul><li>4 zero-to-one launches; ARR 7x, $30K to $200K</li><li>Led AI Studio 0→1 (GenAI video), ARPU +5%</li><li>Activation ~74% up, turnaround 13 → 4 days</li><li>Designer first: Figma, design systems, led 3 designers</li></ul>
+      <span class="go">See the full match →</span>
+    </a>
+    <a class="card scard" href="#ninety">
+      <span class="sn">03</span><span class="tag ap">30 · 60 · 90 days</span>
+      <h3>My first quarter</h3>
+      <p class="ink2">Learn the customers, then ship weekly against one metric.</p>
+      <ol class="phases"><li><b>30</b><span>Meet 20+ customers, set up activation and retention dashboards, ship 2 quick wins</span></li><li><b>60</b><span>Validate Radar with 5 design partners, ship v1, own one activation metric</span></li><li><b>90</b><span>Ship detection, fixes and agent freshness; measure; propose next quarter's roadmap</span></li></ol>
+      <span class="go">See the plan →</span>
+    </a>
+  </div>
+</section>
+
+<!-- 1 PROBLEM -->
+<section class="s rv" id="problem">
+  <div class="sh"><span class="n">01 · Problem</span><h2>What's wrong today</h2></div>
+  <div class="grid2">
+    <div class="prose">
+      <p>Trupeer's promise is that one screen recording becomes a polished video, a step-by-step doc and 20+ translations. The people who buy it (enablement, customer success, support and product marketing teams) document <strong>software that changes every sprint</strong>.</p>
+      <p>That is where the value leaks. Every release moves a button, renames a field or adds a step. The guide still plays, so <strong>nothing looks broken</strong> to the team that owns it. The person who notices is a customer following along, or now, an AI agent answering from Trupeer's knowledge base.</p>
+      <p>When the creator does notice, the tools ask them to work out by themselves what changed, then pick between editing text, swapping a recording through merge, or re-recording the whole thing. Translations and shared pages each need their own pass.</p>
+      <div class="callout"><strong>Problem statement.</strong> Teams can't tell which guide steps no longer match their live product, and fixing one step costs close to what a new guide costs. So libraries drift out of date, trust drops, and renewals hinge on a library nobody has time to maintain.</div>
+    </div>
+    <div class="card" style="display:grid;gap:12px;align-content:start">
+      <span class="lbl">The stale-guide loop</span>
+      <div class="tl">
+        <div><span class="d">Day 0</span><p><b>Customer ships a release.</b> "Invite user" becomes "Add member".</p></div>
+        <div><span class="d">Day 0 to 30</span><p><b>12 guides still show the old button.</b> No one at the customer knows which 12.</p></div>
+        <div><span class="d">Day 9</span><p><b>Ask Trupeer and MCP answer with the old flow.</b> Support tickets rise.</p></div>
+        <div class="gap"><span class="d">Day 31</span><p><b>Someone files a complaint.</b> The creator re-records whole videos and re-runs translations, burning credits.</p></div>
+      </div>
+      <p class="muted" style="font-size:.78rem">Illustrative scenario, not customer data.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2 VOICE -->
+<section class="s rv" id="voice">
+  <div class="sh"><span class="n">02 · Customer voice</span><h2>What users say in public</h2><p class="ink2">I read every Trupeer review I could find (G2, Trustpilot, Product Hunt) and review-style comparisons by competitors. Users love the speed. The complaints cluster around what happens after the first video.</p></div>
+  <div class="grid2" style="align-items:start">
+    <div class="card" style="display:grid;gap:16px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap"><span class="lbl">G2 dislikes, grouped by theme</span><span class="muted" style="font-size:.78rem"><span data-count="43">0</span> complaints in <span data-count="68">0</span> reviews · avg 4.8 / 5</span></div>
+      <div class="bars" id="bars">
+        <div class="bar hot"><span>Editing &amp; updating after the first take</span><span class="t"><i data-w="17"></i></span><b data-count="17">0</b></div>
+        <div class="bar"><span>Voices, avatars, templates</span><span class="t"><i data-w="12"></i></span><b data-count="12">0</b></div>
+        <div class="bar"><span>Pricing &amp; credits</span><span class="t"><i data-w="5"></i></span><b data-count="5">0</b></div>
+        <div class="bar"><span>Bugs, speed, support</span><span class="t"><i data-w="5"></i></span><b data-count="5">0</b></div>
+        <div class="bar"><span>Export &amp; integrations</span><span class="t"><i data-w="4"></i></span><b data-count="4">0</b></div>
+      </div>
+      <p class="muted" style="font-size:.78rem">My tally of the "dislikes" G2 shows on its pros-and-cons view, October 2026. One reviewer can appear in more than one theme.</p>
+    </div>
+    <div class="quotes">
+      <div class="q"><p>"No option to just re-record one part of the video."</p><small>G2 · Small business, IT</small></div>
+      <div class="q"><p>Any product change means re-recording the whole video: "all or nothing".</p><small>G2 · Small business, healthcare (paraphrased)</small></div>
+      <div class="q"><p>"Every minor adjustment breaks the timing."</p><small>G2 · Product manager, small business</small></div>
+      <div class="q"><p>Credits "run out quickly" on longer walkthrough recordings.</p><small>G2 via Trainn's review roundup</small></div>
+    </div>
+  </div>
+  <div class="grid3" style="margin-top:14px">
+    <div class="card"><span class="tag">Trustpilot · 3.0 from 3 reviews</span><p class="ink2" style="margin-top:10px;font-size:.9rem">Two of three are 1-star: a renewal charged for months without receipts or reminders, and a voice clone that didn't sound right. The 5-star one starts with drafts quietly using AI credits.</p></div>
+    <div class="card"><span class="tag">Competitors' framing</span><p class="ink2" style="margin-top:10px;font-size:.9rem">Trails and Trainn both pitch against Trupeer on upkeep: "the need to re-record large chunks" when something changes. Rivals already sell on this weakness.</p></div>
+    <div class="card"><span class="tag fr">What they love</span><p class="ink2" style="margin-top:10px;font-size:.9rem">G2 pros lead with time saved (24 mentions) and ease of use (20). The fix has to protect that: zero new work until a step really changed.</p></div>
+  </div>
+  <div class="callout" style="margin-top:14px"><strong>Insight.</strong> The biggest complaint cluster isn't about making the first video. It's about the second version. Trupeer wins the first five minutes; Freshness Radar is about the next five months.</div>
+</section>
+
+<!-- 3 WHAT EXISTS -->
+<section class="s rv" id="today">
+  <div class="sh"><span class="n">03 · What exists</span><h2>Trupeer already ships the parts</h2><p class="ink2">The releases page shows the team moving fast on this exact pain. Each piece fixes a step once you know it's broken. None tells you what broke.</p></div>
+  <div class="grid2" style="align-items:start">
+    <div class="tl">
+      <div><span class="d">May 14 · Doc Version History</span><p>Timestamped versions you can restore.</p></div>
+      <div><span class="d">May 15 · Embed Anywhere</span><p>Source updates flow to every embed.</p></div>
+      <div><span class="d">Jun 16 · Find and Replace</span><p>Change a word across a whole script.</p></div>
+      <div><span class="d">Jun 26 · Ask Trupeer</span><p>Agentic search with timestamped answers.</p></div>
+      <div><span class="d">Jul 3 · Merge multiple videos</span><p>Swap only the recording for the step that changed.</p></div>
+      <div><span class="d">Jul 22 · Trupeer MCP</span><p>Company knowledge in Claude, ChatGPT and other tools.</p></div>
+      <div><span class="d">Sep 23 · Governance</span><p>Review, approval, versions and audit logs before publishing.</p></div>
+      <div class="gap"><span class="d">Missing · Detection</span><p><b>Which steps no longer match the live product, and what's the cheapest fix?</b></p></div>
+    </div>
+    <div class="tw" style="box-shadow:none">
+      <table style="min-width:0">
+        <thead><tr><th>Job</th><th>Today</th><th>With Radar</th></tr></thead>
+        <tbody>
+          <tr><td>Know a guide is stale</td><td>A viewer complains</td><td>Flagged the day of the release</td></tr>
+          <tr><td>Find the step</td><td>Re-watch the video</td><td>Step-level diff, recorded vs live</td></tr>
+          <tr><td>Pick a fix</td><td>Guess; often re-record all</td><td>Cheapest fix suggested, with credits shown</td></tr>
+          <tr><td>Update languages</td><td>Re-translate each one</td><td>Changed lines only, all languages</td></tr>
+          <tr><td>Keep agents right</td><td>Not covered</td><td>Stale steps flagged in Ask Trupeer and MCP until fixed</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 4 USERS & GOALS -->
+<section class="s rv" id="users">
+  <div class="sh"><span class="n">04 · Users and goals</span><h2>Who this is for</h2></div>
+  <div class="grid3">
+    <div class="card"><span class="lbl">Primary</span><h3 style="margin-top:6px">Enablement or CS lead</h3><p class="ink2" style="margin-top:6px;font-size:.9rem">Owns 50 to 500 guides. Wants to know on release day what to touch, and to fix it in one sitting.</p></div>
+    <div class="card"><span class="lbl">Secondary</span><h3 style="margin-top:6px">Product marketer</h3><p class="ink2" style="margin-top:6px;font-size:.9rem">Ships the release. Wants the "what's new" and the old guides updated together, in every language.</p></div>
+    <div class="card"><span class="lbl">Buyer</span><h3 style="margin-top:6px">Workspace admin</h3><p class="ink2" style="margin-top:6px;font-size:.9rem">Renews the contract. Wants proof the library is current, and that the AI agents aren't sharing old answers.</p></div>
+  </div>
+  <div class="grid2" style="margin-top:14px">
+    <div class="card"><span class="tag fr">Goals</span>
+      <ul class="ink2" style="margin:10px 0 0;padding-left:18px;font-size:.92rem;display:grid;gap:6px">
+        <li>Surface stale steps within a day of a product change.</li>
+        <li>Make most fixes possible without a full re-record.</li>
+        <li>One approval updates video, doc, translations and Ask Trupeer.</li>
+        <li>Give admins a library freshness score they can show their team.</li>
+      </ul></div>
+    <div class="card"><span class="tag">Non-goals for v1</span>
+      <ul class="ink2" style="margin:10px 0 0;padding-left:18px;font-size:.92rem;display:grid;gap:6px">
+        <li>Fixing guides with no human approval.</li>
+        <li>Crawling customers' apps behind login on our own.</li>
+        <li>Rebuilding the editor or timeline.</li>
+        <li>Guides recorded on desktop apps outside the browser.</li>
+      </ul></div>
+  </div>
+</section>
+
+<!-- 5 PROTOTYPE -->
+<section class="s" id="proto">
+  <div class="sh rv"><span class="n">05 · Solution</span><h2>Freshness Radar, inside the workspace</h2><p class="ink2">A clickable prototype styled after Trupeer's editor. Open a guide, inspect a stale step, choose a fix, then ask the same question in Ask Trupeer before and after.</p></div>
+  <div class="stage">
+    <div class="paint"></div>
+    <div class="app" id="app">
+      <aside class="side">
+        <div class="ws"><i>A</i>Acme HR</div>
+        <button class="nav" data-v="lib"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M10 9.5v5l4-2.5z"/></svg>Library</button>
+        <button class="nav on" data-v="radar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M12 12l5-5"/></svg>Freshness<span class="ct" id="navct">4</span></button>
+        <button class="nav" data-v="ask"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3l1.8 4.6L18 9.4l-4.2 1.8L12 16l-1.8-4.8L6 9.4l4.2-1.8z"/></svg>Ask Trupeer</button>
+        <button class="nav" data-v="kb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/></svg>Knowledge Base</button>
+        <button class="nav" data-v="brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="9" r="2"/><circle cx="15" cy="8" r="2"/><path d="M4 18c2-6 14-6 16 0"/></svg>Brand Kit</button>
+        <div class="new">Concept · demo data</div>
+      </aside>
+      <div class="main">
+        <div class="bar1">
+          <div class="seg" id="seg"><button class="on" data-f="video"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/></svg>Video</button><button data-f="doc">Document</button></div>
+          <div class="r"><button class="reset" id="reset">Reset demo</button><span class="av">MB</span></div>
+        </div>
+        <div class="view" id="view"></div>
+      </div>
+      <div class="toast" id="toast"></div>
+    </div>
+    <p class="hint">Concept prototype. Acme HR and every number in it are invented.</p>
+  </div>
+</section>
+
+<!-- 6 HOW IT WORKS -->
+<section class="s rv" id="how">
+  <div class="sh"><span class="n">06 · How detection works</span><h2>Use signals Trupeer already has</h2><p class="ink2">No new crawler in v1. Each signal is cheap, and they get stronger together.</p></div>
+  <div class="grid2">
+    <div class="card"><span class="tag ap">Signal 1 · v1</span><h3 style="margin-top:10px">Re-check on the creator's next visit</h3><p class="ink2" style="margin-top:6px;font-size:.9rem">The Chrome extension already sees the page at record time. When the creator next visits the same URL, compare the elements each step clicked: label, role and position. A renamed or missing target flags that step.</p></div>
+    <div class="card"><span class="tag ap">Signal 2 · v1</span><h3 style="margin-top:10px">Viewers say "this looks different"</h3><p class="ink2" style="margin-top:6px;font-size:.9rem">A one-tap flag on each step of shared pages and the knowledge base, plus a drop-off spike at one timestamp. Both point at a step, not a whole video.</p></div>
+    <div class="card"><span class="tag ap">Signal 3 · v1</span><h3 style="margin-top:10px">Release trigger</h3><p class="ink2" style="margin-top:6px;font-size:.9rem">Paste release notes or connect Linear or Jira. Match changed feature names against guide scripts and on-screen text, so likely-stale steps get flagged before anyone visits.</p></div>
+    <div class="card"><span class="tag">Later</span><h3 style="margin-top:10px">Scheduled checks</h3><p class="ink2" style="margin-top:6px;font-size:.9rem">For Enterprise: a headless re-check of public pages, or of staging with a service login the admin grants. Only after v1 shows flags are accurate.</p></div>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="lbl">Routing each flag to the cheapest fix</span>
+    <div class="tw" style="margin-top:10px;box-shadow:none">
+      <table>
+        <thead><tr><th>What changed</th><th>Suggested fix</th><th>What it touches</th></tr></thead>
+        <tbody>
+          <tr><td>Label or wording only</td><td><b>Update text and screenshot</b></td><td>Script line, voiceover for that line, doc step, captions, translations of that line</td></tr>
+          <tr><td>New or moved step in the flow</td><td><b>Re-record this step</b></td><td>One clip, swapped in with Merge; rest of the video kept</td></tr>
+          <tr><td>Cosmetic (colour, spacing)</td><td><b>Mark as not a real change</b></td><td>Nothing; trains the detector</td></tr>
+          <tr><td>Whole flow redesigned</td><td><b>Re-record the guide</b></td><td>Full regenerate, flagged as rare</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 7 REQUIREMENTS -->
+<section class="s rv" id="reqs">
+  <div class="sh"><span class="n">07 · Requirements</span><h2>What we build</h2></div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Pri</th><th>Requirement</th><th>User story</th><th>Acceptance</th></tr></thead>
+      <tbody>
+        <tr><td class="p0">P0</td><td>Step-level stale flags</td><td>As a CS lead, I see which steps of which guides no longer match the product.</td><td>Flag shows step, timestamp, reason, and a recorded vs live view</td></tr>
+        <tr><td class="p0">P0</td><td>Freshness view</td><td>As an admin, I see one score and a list sorted by views × staleness.</td><td>Score = fresh steps ÷ all steps; filter by team and owner</td></tr>
+        <tr><td class="p0">P0</td><td>Fix routing</td><td>As a creator, I'm offered the cheapest fix that works, with its credit cost.</td><td>3 fix types; credits shown before I confirm</td></tr>
+        <tr><td class="p0">P0</td><td>Propagate in one approval</td><td>As a PMM, one fix updates the video, the doc and each language.</td><td>Only changed lines re-voiced and re-translated; goes through Governance if on</td></tr>
+        <tr><td class="p1">P1</td><td>Agent freshness</td><td>As an admin, Ask Trupeer and MCP don't serve a flagged step as fact.</td><td>Answers citing a stale step carry a warning until fixed</td></tr>
+        <tr><td class="p1">P1</td><td>Viewer flag</td><td>As a viewer, I can say a step looks different in one tap.</td><td>Flag lands on that step for the owner</td></tr>
+        <tr><td class="p1">P1</td><td>Release trigger</td><td>As a PMM, pasting release notes lists the guides they affect.</td><td>List ready in under 1 minute for 200 guides</td></tr>
+        <tr><td class="p2">P2</td><td>Weekly digest</td><td>As an owner, I get a Monday email of my stale guides.</td><td>One email per owner, unsubscribe in one click</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 8 METRICS -->
+<section class="s rv" id="metrics">
+  <div class="sh"><span class="n">08 · Success metrics</span><h2>How we'll know it worked</h2></div>
+  <div class="card" style="display:grid;gap:8px;background:var(--rose-soft);border-color:var(--rose-line)">
+    <span class="lbl" style="color:var(--rose-ink)">North star</span>
+    <p style="font-family:var(--serif);font-size:1.3rem;line-height:1.35;color:var(--ink)">Share of knowledge views, by people and agents, served from steps verified in the last 30 days.</p>
+  </div>
+  <div class="grid3" style="margin-top:14px">
+    <div class="card"><span class="tag fr">Input</span><h3 style="margin-top:8px">Days from change to fix</h3><p class="ink2" style="font-size:.9rem;margin-top:4px">Median, per workspace. Expect weeks today; target under 3 days.</p></div>
+    <div class="card"><span class="tag fr">Input</span><h3 style="margin-top:8px">Fixes without a full re-record</h3><p class="ink2" style="font-size:.9rem;margin-top:4px">Share of resolved flags that used text update or one-step re-record.</p></div>
+    <div class="card"><span class="tag fr">Input</span><h3 style="margin-top:8px">Flag precision</h3><p class="ink2" style="font-size:.9rem;margin-top:4px">Flags acted on ÷ flags raised. Gates the move to scheduled checks.</p></div>
+    <div class="card"><span class="tag st">Guardrail</span><h3 style="margin-top:8px">Dismissed flags under 20%</h3><p class="ink2" style="font-size:.9rem;margin-top:4px">Noise kills trust faster than misses do.</p></div>
+    <div class="card"><span class="tag st">Guardrail</span><h3 style="margin-top:8px">Credits per fix</h3><p class="ink2" style="font-size:.9rem;margin-top:4px">Must drop vs today's re-record, or the feature fails its own promise.</p></div>
+    <div class="card"><span class="tag">Business</span><h3 style="margin-top:8px">Renewal and expansion</h3><p class="ink2" style="font-size:.9rem;margin-top:4px">Score on every admin dashboard; agent freshness and scheduled checks on Enterprise.</p></div>
+  </div>
+</section>
+
+<!-- 9 PLAN -->
+<section class="s rv" id="plan">
+  <div class="sh"><span class="n">09 · Plan</span><h2>Four weekly ships</h2><p class="ink2">Each week ends with something a design partner can use, so we learn before we build the next layer.</p></div>
+  <div class="grid2">
+    <div class="card"><span class="lbl">Week 1</span><h3 style="margin-top:6px">Viewer flag + manual "mark stale"</h3><p class="ink2" style="font-size:.9rem;margin-top:4px">Freshness list and score from human signals only. Five design-partner workspaces.</p></div>
+    <div class="card"><span class="lbl">Week 2</span><h3 style="margin-top:6px">Re-check on next visit</h3><p class="ink2" style="font-size:.9rem;margin-top:4px">Step-level diff from the extension. Measure precision by hand on 100 flags.</p></div>
+    <div class="card"><span class="lbl">Week 3</span><h3 style="margin-top:6px">Fix routing + propagation</h3><p class="ink2" style="font-size:.9rem;margin-top:4px">Text update and one-step re-record carried to doc and translations, via Governance.</p></div>
+    <div class="card"><span class="lbl">Week 4</span><h3 style="margin-top:6px">Agent freshness + release trigger</h3><p class="ink2" style="font-size:.9rem;margin-top:4px">Warnings in Ask Trupeer and MCP; paste release notes to get affected guides.</p></div>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag rw">Quick wins from the reviews, shippable alongside</span>
+    <div class="grid3" style="margin-top:12px">
+      <div><h3>Credit preview</h3><p class="ink2" style="font-size:.88rem;margin-top:4px">Show the cost before Generate, Translate or Refresh Voiceover, and say when drafts use credits.</p></div>
+      <div><h3>Renewal reminders</h3><p class="ink2" style="font-size:.88rem;margin-top:4px">Receipt on every charge and an email 7 days before renewal. Both 1-star Trustpilot reviews start with surprises.</p></div>
+      <div><h3>Trash with 30-day undo</h3><p class="ink2" style="font-size:.88rem;margin-top:4px">The FAQ says deleted videos can't be recovered. A safety net makes bold edits safe.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 RISKS -->
+<section class="s rv" id="risks">
+  <div class="sh"><span class="n">10 · Risks and open questions</span><h2>What could go wrong</h2></div>
+  <div class="grid2">
+    <div class="card"><h3>False flags</h3><p class="ink2" style="font-size:.9rem;margin-top:4px">A/B tests, personalised UI and feature flags change pages without a real change. Mitigation: ship with human signals first, require two signals before an auto-flag, learn from dismissals.</p></div>
+    <div class="card"><h3>Privacy and access</h3><p class="ink2" style="font-size:.9rem;margin-top:4px">Re-checks only run on pages the creator opens with the extension. No stored page content beyond what recording keeps today. Smart Blur rules apply.</p></div>
+    <div class="card"><h3>Credit cannibalisation</h3><p class="ink2" style="font-size:.9rem;margin-top:4px">Cheaper fixes mean fewer re-records. Open question: price Radar as an Enterprise add-on, or count on the retention and seat expansion that a trusted library brings?</p></div>
+    <div class="card"><h3>Ownership</h3><p class="ink2" style="font-size:.9rem;margin-top:4px">Flags without an owner pile up. Open question: default owner = creator, or let admins assign by folder?</p></div>
+  </div>
+</section>
+
+<!-- 11 WHY ME -->
+<section class="s rv" id="me">
+  <div class="sh"><span class="n">11 · Why me</span><h2>Why I'm a fit for Founding PM</h2><p class="ink2">I've done this job at a seed-stage video startup: worked directly with the founder, shipped zero-to-one, and owned what happened after launch.</p></div>
+  <div class="me">
+    <div class="map">
+      <div class="mi"><span class="j">Zero-to-one, directly with founders</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span class="a">Founding APM at Vudio.ai, an AI video startup. Contributed to four 0→1 launches; ARR grew 7x, $30K to $200K.</span></div>
+      <div class="mi"><span class="j">AI products and prototyping</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span class="a">Led AI Studio, a GenAI video tool, 0→1: prompt framework, APIs and UX. ARPU up 5% among fashion brands.</span></div>
+      <div class="mi"><span class="j">Activation and analytics</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span class="a">Self-serve onboarding lifted activation ~74%, turnaround 13 → 4 days. Analytics dashboard lifted free-to-paid ~10%.</span></div>
+      <div class="mi"><span class="j">Hands-on in Figma, B2B SaaS</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span class="a">Product designer at LeadSquared (B2B field sales app). Hired and led 3 designers and built a design system at Vudio.</span></div>
+      <div class="mi"><span class="j">Shipping weekly with customers</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span class="a">Worked across product and customer success for 1,000+ brands including Shoppers Stop and Godrej.</span></div>
+    </div>
+    <div class="card" style="display:grid;gap:14px;align-content:start;align-self:start;position:relative;overflow:hidden">
+      <div class="paint" style="opacity:.55"></div>
+      <div style="position:relative;display:grid;gap:12px">
+        <span class="lbl">Moulshree Bhutra · Bengaluru</span>
+        <p style="font-family:var(--serif);font-size:1.35rem;line-height:1.3;color:var(--rose-ink)">"I like the unglamorous parts of a product: onboarding, activation, the dashboard a customer opens before they renew."</p>
+        <p class="ink2" style="font-size:.9rem">Freshness Radar is that kind of feature. I'd love to spend my first month with Trupeer's customers testing whether it's the right one.</p>
+        <p class="ink2" style="font-size:.9rem">NextLeap PM Fellowship, top 3 of 200+ · B.Tech, Computer Science · 3+ years in product and design</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 30-60-90 -->
+<section class="s rv" id="ninety">
+  <div class="sh"><span class="n">12 · 30 · 60 · 90 days</span><h2>What I'll do after joining</h2><p class="ink2">Listen first, ship every week, and tie each release to one number. Radar is my hypothesis; the first 30 days decide whether it's the right bet.</p></div>
+  <div class="ninety">
+    <div class="card ph">
+      <div class="hd"><span class="big">30</span><span>Days 1 to 30 · Learn</span></div>
+      <h3>Understand customers, product and numbers</h3>
+      <ul>
+        <li>Talk to 20+ customers across CS, enablement and PMM, plus sit in on sales and support calls.</li>
+        <li>Read every review, churn note and support ticket; tag them into one shared problem map.</li>
+        <li>Set up Mixpanel or Amplitude funnels: record → generate → edit → share → view, and credit use per account.</li>
+        <li>Learn the codebase basics and the team's Linear flow; join the weekly release.</li>
+        <li>Ship 2 quick wins from the reviews: credit cost preview before Generate, and renewal reminder emails.</li>
+      </ul>
+      <p class="out"><b>Outcome:</b> a baseline dashboard, a ranked problem map the founders agree with, and 2 shipped fixes.</p>
+    </div>
+    <div class="card ph">
+      <div class="hd"><span class="big">60</span><span>Days 31 to 60 · Build</span></div>
+      <h3>Validate and ship the first version</h3>
+      <ul>
+        <li>Prototype Radar in Figma and with AI tools; test with 5 design-partner workspaces.</li>
+        <li>Ship v1 in weekly slices: viewer flags, freshness list and score, then re-check on next visit.</li>
+        <li>Own one activation metric end to end (e.g. first shared guide within 7 days) and run 2 experiments on it.</li>
+        <li>Set a simple rhythm: one-page PRDs, weekly release notes, a Friday metrics review.</li>
+      </ul>
+      <p class="out"><b>Outcome:</b> Radar v1 live with design partners, flag precision measured, a first activation lift.</p>
+    </div>
+    <div class="card ph">
+      <div class="hd"><span class="big">90</span><span>Days 61 to 90 · Scale</span></div>
+      <h3>Prove impact and plan the next quarter</h3>
+      <ul>
+        <li>Ship fix routing, one-approval propagation to docs and translations, and agent freshness for Ask Trupeer and MCP.</li>
+        <li>Roll out to all paid workspaces; package the extras for Enterprise with sales.</li>
+        <li>Report results: days from change to fix, fixes without a full re-record, credits per fix.</li>
+        <li>Propose next quarter's roadmap from the problem map, with a clear "not now" list.</li>
+      </ul>
+      <p class="out"><b>Outcome:</b> a feature customers use weekly, numbers to show for it, and a roadmap the team owns.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact rv" id="contact">
+  <div class="paint"></div>
+  <div class="cin">
+    <div>
+      <span class="lbl">Let's talk</span>
+      <h2>Moulshree Bhutra</h2>
+      <p class="ink2" style="max-width:46ch">Product Manager in Bengaluru, applying for Founding Product Manager at Trupeer. I'd love to walk you through this, and to hear where I got it wrong.</p>
+    </div>
+    <div class="links">
+      <a class="lk" href="https://moulshreebhutra.github.io/moulshree-portfolio/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18"/><circle cx="6.5" cy="6.5" r=".6" fill="currentColor"/></svg><div><b>Portfolio</b><span>moulshreebhutra.github.io/moulshree-portfolio</span></div></a>
+      <a class="lk" href="https://www.linkedin.com/in/moulshree-bhutra-159a99118" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 11v5M8 8v.01M12 16v-5M12 13a2 2 0 0 1 4 0v3"/></svg><div><b>LinkedIn</b><span>in/moulshree-bhutra-159a99118</span></div></a>
+      <div class="lk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="4.5" width="19" height="15" rx="3"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg><div><b>Email</b><span>moulshreebhutra@gmail.com</span></div><button class="copy" data-copy="moulshreebhutra@gmail.com">Copy</button></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p><b style="color:var(--ink)">Sources</b> (read October 2026)</p>
+  <ul class="src">
+    <li><a href="https://www.g2.com/products/trupeer/reviews?qs=pros-and-cons" target="_blank" rel="noopener">G2 · Trupeer pros and cons</a></li>
+    <li><a href="https://www.trustpilot.com/review/www.trupeer.ai" target="_blank" rel="noopener">Trustpilot · Trupeer reviews</a></li>
+    <li><a href="https://trainn.co/blog/trupeer-reviews/" target="_blank" rel="noopener">Trainn · Trupeer reviews roundup</a> (competitor)</li>
+    <li><a href="https://trails.so/guides/trupeer-alternatives" target="_blank" rel="noopener">Trails · Trupeer alternatives</a> (competitor)</li>
+    <li><a href="https://www.trupeer.ai/releases" target="_blank" rel="noopener">Trupeer · New releases</a></li>
+    <li><a href="https://www.trupeer.ai/faq" target="_blank" rel="noopener">Trupeer · FAQ</a></li>
+    <li><a href="https://www.trupeer.ai/careers#founding-product-manager" target="_blank" rel="noopener">Trupeer · Founding PM role</a></li>
+    <li><a href="https://cmotech.uk/story/trupeer-raises-usd-3m-to-automate-ai-powered-video-creation" target="_blank" rel="noopener">CMOtech · Trupeer raises $3M seed</a></li>
+  </ul>
+  <p>Independent concept by Moulshree Bhutra, written as part of a job application. Not affiliated with or endorsed by Trupeer. The prototype's workspace, guides and numbers are invented.</p>
+</footer>
+</main>
+
+<script>
+/* theme */
+(function(){
+  var r=document.documentElement,b=document.getElementById('theme');
+  try{var s=localStorage.getItem('fr-theme');if(s)r.setAttribute('data-theme',s)}catch(e){}
+  b.onclick=function(){
+    var dark=r.getAttribute('data-theme')?r.getAttribute('data-theme')==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var go=function(){r.setAttribute('data-theme',dark?'light':'dark')};
+    if(document.startViewTransition)document.startViewTransition(go);else go();
+    try{localStorage.setItem('fr-theme',dark?'light':'dark')}catch(e){}
+  };
+})();
+
+/* reveals + bars + toc */
+(function(){
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');
+    e.target.querySelectorAll('.bar i').forEach(function(i){i.style.width=(i.dataset.w/17*100)+'%'});io.unobserve(e.target)}})},{threshold:.12});
+  document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+  var links=[].slice.call(document.querySelectorAll('#toc a'));
+  var so=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id)})}})},{rootMargin:'-45% 0px -50% 0px'});
+  links.forEach(function(a){var s=document.querySelector(a.getAttribute('href'));if(s)so.observe(s)});
+  document.querySelectorAll('[data-copy]').forEach(function(b){b.onclick=function(){
+    var t=b.dataset.copy,done=function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1400)};
+    try{navigator.clipboard.writeText(t).then(done,function(){sel(b)})}catch(e){sel(b)}}});
+  function sel(b){var r=document.createRange();r.selectNodeContents(b.previousElementSibling.querySelector('span')||b.previousElementSibling);var s=getSelection();s.removeAllRanges();s.addRange(r)}
+})();
+
+/* ===== prototype ===== */
+(function(){
+  var G0=function(){return [
+    {id:'inv',t:'Invite a teammate',views:1840,owner:'Priya',steps:[
+      {ts:'00:00',tx:'Open <mark>Settings</mark> from the left menu.'},
+      {ts:'00:06',tx:'Go to <mark>People</mark>.'},
+      {ts:'00:11',tx:'Click <mark>Invite user</mark> in the top right.',st:'stale',kind:'label',was:'Invite user',now:'Add member',why:'The button the guide clicks was renamed. Same place, same action.',fix:'text'},
+      {ts:'00:17',tx:'Enter their work email.'},
+      {ts:'00:23',tx:'Pick a <mark>Role</mark> from the dropdown.',st:'stale',kind:'flow',was:'Role',now:'Permission set',why:'The Role dropdown became a Permission set picker with a new step.',fix:'clip'},
+      {ts:'00:31',tx:'Click Send invite.'}]},
+    {id:'role',t:'Assign roles to a team',views:960,owner:'Priya',steps:[
+      {ts:'00:00',tx:'Open People.'},
+      {ts:'00:05',tx:'Select teammates with the checkboxes.'},
+      {ts:'00:12',tx:'Choose <mark>Change role</mark> from bulk actions.',st:'stale',kind:'label',was:'Change role',now:'Change permissions',why:'Bulk action renamed in the same release.',fix:'text'},
+      {ts:'00:19',tx:'Confirm.'}]},
+    {id:'sso',t:'Set up SSO',views:410,owner:'Arjun',steps:[
+      {ts:'00:00',tx:'Open Security settings.'},
+      {ts:'00:07',tx:'Click <mark>Configure SSO</mark>.',st:'review',kind:'cosmetic',was:'Configure SSO',now:'Configure SSO',why:'Button moved 24px and changed colour. Label and action are the same.',fix:'dismiss'},
+      {ts:'00:14',tx:'Paste your IdP metadata URL.'},
+      {ts:'00:22',tx:'Save and test.'}]},
+    {id:'pay',t:'Export payroll report',views:1220,owner:'Arjun',steps:[{ts:'00:00',tx:'Open Reports.'},{ts:'00:06',tx:'Pick Payroll.'},{ts:'00:12',tx:'Choose the month.'},{ts:'00:18',tx:'Click Export CSV.'}]},
+    {id:'lv',t:'Approve a leave request',views:2310,owner:'Priya',steps:[{ts:'00:00',tx:'Open Requests.'},{ts:'00:05',tx:'Filter by Leave.'},{ts:'00:10',tx:'Open the request.'},{ts:'00:16',tx:'Click Approve.'}]}
+  ]};
+  var G=G0(),view='radar',open=null,stepI=null,choice=null,fmt='video';
+  var V=document.getElementById('view'),T=document.getElementById('toast');
+  var FIX={text:{b:'Update wording and screenshot',s:'Rewrites the line, refreshes this step\'s voiceover and frame, and updates each translated line.',c:'~1 step of credits'},
+           clip:{b:'Re-record only this step',s:'Record the new step once, swap it in with Merge. The rest of the video stays.',c:'~1 clip of credits'},
+           dismiss:{b:'Not a real change',s:'Keep the guide as is. Teaches the detector to ignore this kind of shift.',c:'free'},
+           full:{b:'Re-record the whole guide',s:'Only if the flow was redesigned end to end.',c:'full video'}};
+  function cnt(){var a=0,f=0,s=0;G.forEach(function(g){g.steps.forEach(function(x){a++;if(!x.st)f++;else s++})});return{a:a,f:f,s:s}}
+  function flagged(g){return g.steps.filter(function(x){return x.st}).length}
+  function nav(){document.querySelectorAll('.nav').forEach(function(n){n.classList.toggle('on',n.dataset.v===view||(view==='guide'&&n.dataset.v==='radar'))});
+    var c=cnt(),ct=document.getElementById('navct');ct.textContent=c.s?c.s:'✓';ct.classList.toggle('z',!c.s)}
+  function ring(p){var r=46,C=2*Math.PI*r;
+    return '<div class="ring"><svg viewBox="0 0 110 110"><circle cx="55" cy="55" r="'+r+'" fill="none" stroke="var(--sunk)" stroke-width="10"/><circle id="rg" cx="55" cy="55" r="'+r+'" fill="none" stroke="'+(p===100?'var(--fresh)':'var(--app)')+'" stroke-width="10" stroke-linecap="round" stroke-dasharray="'+C+'" stroke-dashoffset="'+C+'" style="transition:stroke-dashoffset 1s cubic-bezier(.2,.8,.2,1)" data-to="'+(C*(1-p/100))+'"/></svg><div class="v"><div><b>'+p+'%</b><small>steps fresh</small></div></div></div>'}
+  function badge(g){var n=flagged(g);if(!n)return '<span class="tag fr">Fresh</span>';
+    var st=g.steps.some(function(x){return x.st==='stale'});return st?'<span class="tag st">'+n+' stale</span>':'<span class="tag rw">'+n+' to review</span>'}
+  function rRadar(){
+    var c=cnt(),p=Math.round(c.f/c.a*100);
+    var list=G.slice().sort(function(a,b){return (flagged(b)?b.views:0)-(flagged(a)?a.views:0)});
+    V.innerHTML=
+      (c.s?'<div class="rel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1"/></svg><span><b>Acme HR shipped v4.12</b> on Oct 14. We re-checked steps when Priya next opened People, and from 3 viewer flags.</span></div>'
+          :'<div class="rel" style="background:var(--fresh-soft);border-color:transparent"><svg viewBox="0 0 24 24" fill="none" stroke="var(--fresh)" stroke-width="2.4" stroke-linecap="round"><path d="M5 12l5 5 9-10"/></svg><span><b>Library matches v4.12.</b> Every guide, doc and translation is current.</span></div>')+
+      '<div class="top2">'+ring(p)+'<div class="kpis"><div class="kpi"><b>'+c.f+'/'+c.a+'</b><span>steps fresh</span></div><div class="kpi"><b>'+G.filter(flagged).length+'</b><span>guides need a look</span></div><div class="kpi"><b>'+(c.s?'2.1k':'0')+'</b><span>weekly views on stale steps</span></div></div></div>'+
+      '<div class="list">'+list.map(function(g){return '<div class="row" data-g="'+g.id+'"><span class="th"></span><div style="min-width:0"><h4>'+g.t+'</h4><span class="sm">'+g.views.toLocaleString()+' views / month · '+g.owner+' · video, doc, 6 languages</span></div>'+badge(g)+'</div>'}).join('')+'</div>';
+    requestAnimationFrame(function(){requestAnimationFrame(function(){var e=document.getElementById('rg');if(e)e.style.strokeDashoffset=e.dataset.to})});
+    if(p===100&&!window.__cel){window.__cel=1;setTimeout(celebrate,700)}
+    V.querySelectorAll('.row').forEach(function(r){r.onclick=function(){openG(r.dataset.g)}});
+  }
+  function openG(id){open=G.find(function(g){return g.id===id});view='guide';
+    stepI=open.steps.findIndex(function(x){return x.st});choice=stepI>=0?open.steps[stepI].fix:null;render()}
+  function mock(s,live){
+    var lab=live?s.now:s.was,cls=live?'ring-hl new':'ring-hl',isLbl=s.kind==='label'||s.kind==='cosmetic';
+    var top='<div class="mrow"><b style="font-size:.76rem">People</b><span class="mbtn'+(isLbl?' '+cls:'')+'"'+(s.kind==='cosmetic'&&live?' style="margin-right:14px;background:var(--app)"':'')+'>'+(isLbl?lab:(open.id==='inv'?(live?'Add member':'Invite user'):'Invite'))+'</span></div>';
+    var body=s.kind==='flow'?'<div class="mbar" style="width:70%"></div><div class="mrow"><span class="muted">'+lab+'</span><span class="mfield '+cls+'">'+(live?'Choose set ▾':'Member ▾')+'</span></div>'+(live?'<div class="mrow"><span class="muted">Scope</span><span class="mfield">All teams ▾</span></div>':''):'<div class="mbar" style="width:80%"></div><div class="mbar" style="width:55%"></div><div class="mbar" style="width:65%"></div>';
+    return '<div class="mock"><span class="lbl">'+(live?'Live today · v4.12':'When recorded · Aug 2')+'</span><div class="mscreen">'+top+body+'</div></div>'}
+  function rGuide(){
+    var g=open,s=stepI>=0?g.steps[stepI]:null;
+    var h='<button class="back" id="bk">← Freshness</button><div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><h3 style="font-size:1.1rem">'+g.t+'</h3>'+badge(g)+'</div>'+
+      '<div class="tabs"><span class="on">Script</span><span>AI Voice</span><span>Visuals</span><span>Zooms</span><span>Translations · 6</span></div>';
+    h+='<div class="steps">'+g.steps.map(function(x,i){return '<div class="step'+(i===stepI?' open'+(x.st==='review'?' rvw':''):'')+'" data-i="'+i+'"><span class="ts">'+x.ts+'</span><p>'+x.tx+'</p>'+(x.st==='stale'?'<span class="tag st">Stale</span>':x.st==='review'?'<span class="tag rw">Review</span>':x.done?'<span class="tag fr">Fixed</span>':'')+'</div>'+
+      (i===stepI&&s&&s.st?detail(s):'')}).join('')+'</div>';
+    V.innerHTML=h;
+    document.getElementById('bk').onclick=function(){view='radar';render()};
+    V.querySelectorAll('.step').forEach(function(el){el.onclick=function(){var i=+el.dataset.i;if(!g.steps[i].st)return;stepI=i;choice=g.steps[i].fix;render()}});
+    V.querySelectorAll('.fix').forEach(function(b){b.onclick=function(e){e.stopPropagation();choice=b.dataset.k;V.querySelectorAll('.fix').forEach(function(x){x.classList.toggle('rec',x===b)})}});
+    var ap=document.getElementById('apply');if(ap)ap.onclick=function(){ap.classList.add('busy');ap.textContent='Updating video, doc and 6 languages';setTimeout(apply,650)};
+  }
+  function detail(s){
+    var ks=s.kind==='flow'?['clip','text','full']:s.kind==='cosmetic'?['dismiss','text']:['text','clip','dismiss'];
+    return '<div class="detail" style="padding:2px 0 8px">'+
+      '<div class="diff">'+mock(s,false)+mock(s,true)+'</div>'+
+      '<div class="why"><b>Why flagged:</b> '+s.why+'</div>'+
+      '<div class="fixes">'+ks.map(function(k){var f=FIX[k];return '<button class="fix'+(k===choice?' rec':'')+'" data-k="'+k+'"><span class="dot"></span><div class="fd"><b>'+f.b+(k===s.fix?' <i class="tag ap" style="margin-left:4px;font-style:normal">Suggested</i>':'')+'</b><span>'+f.s+'</span></div><em>'+f.c+'</em></button>'}).join('')+'</div>'+
+      '<button class="apply" id="apply">Apply fix everywhere</button></div>'}
+  function apply(){
+    var s=open.steps[stepI],k=choice;
+    if(k==='dismiss'){s.st=null;s.done=false}
+    else{s.st=null;s.done=true;if(s.was&&s.now&&s.was!==s.now)s.tx=s.tx.replace(s.was,s.now)}
+    toast(k);
+    var nx=open.steps.findIndex(function(x){return x.st});stepI=nx;choice=nx>=0?open.steps[nx].fix:null;render();
+  }
+  function toast(k){
+    T.innerHTML=k==='dismiss'?'<b>Marked as not a real change.</b><ul><li>Guide unchanged</li><li>Detector learns from this</li></ul>'
+      :'<b>Fixed in one approval</b><ul><li>Video: '+(k==='clip'?'1 clip swapped':'1 line re-voiced, frame refreshed')+'</li><li>Doc step updated</li><li>6 translations: changed line only</li><li>Ask Trupeer and MCP now cite the new step</li><li>Sent to Arjun for review (Governance)</li></ul>';
+    T.classList.add('on');clearTimeout(T._t);T._t=setTimeout(function(){T.classList.remove('on')},3600)}
+  function celebrate(){var r=V.querySelector('.ring');if(!r)return;r.classList.add('done');
+    var cols=['var(--fresh)','var(--app)','var(--rose)','var(--review)'];
+    for(var i=0;i<18;i++){var d=document.createElement('i');d.className='burst';var a=i/18*Math.PI*2,R=70+Math.random()*30;
+      d.style.setProperty('--dx',Math.cos(a)*R+'px');d.style.setProperty('--dy',Math.sin(a)*R+'px');d.style.background=cols[i%4];r.appendChild(d);setTimeout(function(x){return function(){x.remove()}}(d),1000)}}
+  function rAsk(){
+    var inv=G[0],st=inv.steps.some(function(x){return x.st});
+    V.innerHTML='<div class="ask"><span class="lbl">Ask Trupeer · also what Claude and ChatGPT get through MCP</span>'+
+      '<div class="bubble u">How do I invite a new teammate?</div>'+
+      '<div class="bubble a" id="ans"><span class="typing"><i></i><i></i><i></i></span></div><template id="ansT">Open <b>Settings → People</b>, click <b>'+(st&&inv.steps[2].st?'Invite user':'Add member')+'</b>, enter their work email, then pick a <b>'+(st&&inv.steps[4].st?'Role':'Permission set')+'</b> and send the invite. <span class="muted">· from "Invite a teammate", 00:11</span>'+
+      (st?'<div class="warnline bad"><span>⚠</span><span>2 steps in this guide may not match v4.12. Answer could be out of date. Owner notified.</span></div>'
+         :'<div class="warnline ok"><span>✓</span><span>Every step verified against v4.12 today.</span></div>')+'</template>'+
+      '<p class="muted" style="font-size:.8rem">'+(st?'Fix the stale steps in Freshness, then come back and ask again.':'Same question, now answered from verified steps.')+'</p></div>';
+    setTimeout(function(){var a=document.getElementById('ans'),t=document.getElementById('ansT');if(a&&t)a.innerHTML=t.innerHTML},900);
+  }
+  function rOther(n){V.innerHTML='<div class="muted" style="padding:30px 0;text-align:center;font-size:.9rem">'+n+' is part of Trupeer today. This prototype only covers Freshness and Ask Trupeer.</div>'}
+  function render(){nav();V.classList.remove('swap');void V.offsetWidth;V.classList.add('swap');if(view==='radar')rRadar();else if(view==='guide')rGuide();else if(view==='ask')rAsk();else rOther({lib:'Library',kb:'Knowledge Base',brand:'Brand Kit'}[view])}
+  document.querySelectorAll('.nav').forEach(function(n){n.onclick=function(){view=n.dataset.v;render()}});
+  document.querySelectorAll('#seg button').forEach(function(b){b.onclick=function(){document.querySelectorAll('#seg button').forEach(function(x){x.classList.toggle('on',x===b)})}});
+  document.getElementById('reset').onclick=function(){G=G0();window.__cel=0;view='radar';T.classList.remove('on');render()};
+  render();
+})();
+/* ===== interaction layer ===== */
+(function(){
+  var RM=matchMedia('(prefers-reduced-motion: reduce)').matches,FINE=matchMedia('(hover:hover) and (pointer:fine)').matches;
+  // hero words
+  var h=document.querySelector('.hero h1');
+  if(h&&!RM){var i=0;h.innerHTML=h.textContent.trim().split(/\s+/).map(function(w){return '<span class="w" style="--i:'+(i++)+'">'+w+'</span>'}).join(' ')}
+  // stagger children
+  document.querySelectorAll('.rv .grid3,.rv .grid2,.rv .quotes,.rv .ninety,.rv .map,.rv .tl,.rv .bars,.rv .links,.rv .cin').forEach(function(g){
+    [].slice.call(g.children).forEach(function(c,k){if(c.classList.contains('paint'))return;c.classList.add('stg-i');c.style.transitionDelay=(k*80)+'ms';
+      setTimeout(function(){},0)})});
+  var clear=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){setTimeout(function(){e.target.querySelectorAll('.stg-i').forEach(function(c){c.style.transitionDelay=''})},1400);clear.unobserve(e.target)}})},{threshold:.12});
+  document.querySelectorAll('.rv').forEach(function(s){clear.observe(s)});
+  // count up
+  var co=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;co.unobserve(e.target);var el=e.target,to=+el.dataset.count,t0=performance.now(),d=RM?1:1100;
+    (function f(t){var k=Math.min(1,(t-t0)/d);el.textContent=Math.round(to*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(f)})(t0)})},{threshold:.5});
+  document.querySelectorAll('[data-count]').forEach(function(el){co.observe(el)});
+  // progress + to top
+  var pr=document.getElementById('prog'),tt=document.getElementById('toTop'),tick=false;
+  function onS(){document.querySelectorAll('.rv:not(.in)').forEach(function(el){if(el.getBoundingClientRect().top<innerHeight*.9){el.classList.add('in');el.querySelectorAll('.bar i').forEach(function(i){i.style.width=(i.dataset.w/17*100)+'%'})}});var m=document.documentElement.scrollHeight-innerHeight;pr.style.transform='scaleX('+(m>0?scrollY/m:0)+')';tt.classList.toggle('on',scrollY>900);tick=false}
+  addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(onS)}},{passive:true});onS();
+  tt.onclick=function(){scrollTo({top:0,behavior:RM?'auto':'smooth'})};
+  if(!FINE||RM)return;
+  // spotlight
+  document.addEventListener('pointermove',function(e){var c=e.target.closest&&e.target.closest('.card');if(!c)return;var r=c.getBoundingClientRect();
+    c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')},{passive:true});
+  // tilt
+  document.querySelectorAll('.scard').forEach(function(c){
+    c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+      c.style.transform='perspective(900px) rotateY('+(x*6)+'deg) rotateX('+(-y*6)+'deg) translateY(-3px)'});
+    c.addEventListener('pointerleave',function(){c.style.transform=''})});
+  // magnetic buttons
+  document.querySelectorAll('.btn.pri').forEach(function(b){
+    b.addEventListener('pointermove',function(e){var r=b.getBoundingClientRect();b.style.transform='translate('+((e.clientX-r.left-r.width/2)*.18)+'px,'+((e.clientY-r.top-r.height/2)*.25)+'px)'});
+    b.addEventListener('pointerleave',function(){b.style.transform=''})});
+  // hero parallax
+  var hero=document.querySelector('.hero'),hp=hero&&hero.querySelector('.paint');
+  if(hero&&hp){hero.addEventListener('pointermove',function(e){var r=hero.getBoundingClientRect();hp.style.setProperty('--px',((e.clientX-r.left)/r.width-.5)*-24+'px');hp.style.setProperty('--py',((e.clientY-r.top)/r.height-.5)*-24+'px')});
+    hero.addEventListener('pointerleave',function(){hp.style.setProperty('--px','0px');hp.style.setProperty('--py','0px')})}
+})();
+</script>
