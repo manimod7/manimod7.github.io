@@ -93,8 +93,8 @@ h1 span{color:var(--accent)}
 
 .hero::before{content:"";position:absolute;inset:-60px -16px 0;z-index:-1;pointer-events:none;background-image:radial-gradient(color-mix(in srgb,var(--ink) 16%,transparent) 1px,transparent 1.2px);background-size:24px 24px;-webkit-mask-image:radial-gradient(ellipse 75% 100% at 50% 0%,#000 25%,transparent 72%);mask-image:radial-gradient(ellipse 75% 100% at 50% 0%,#000 25%,transparent 72%)}
 .hero::after{content:"";position:absolute;inset:-80px -16px auto auto;width:62%;height:420px;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 60% 70% at 75% 25%,color-mix(in srgb,var(--accent) 16%,transparent),transparent 70%)}
-.status i{animation:pulse 2.6s ease-out infinite}
-@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--ok) 45%,transparent)}70%,100%{box-shadow:0 0 0 7px transparent}}
+.status i{position:relative}.status i::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--ok);animation:pulse 2.6s var(--ease-out) infinite}
+@keyframes pulse{0%{transform:scale(1);opacity:.45}70%,100%{transform:scale(2.6);opacity:0}}
 .pill.main:hover,.run:hover{box-shadow:0 10px 26px -10px color-mix(in srgb,var(--accent) 70%,transparent)}
 /* bento */
 .grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
@@ -138,7 +138,7 @@ th:first-child,td:first-child{text-align:left}
 td{padding:13px 16px;border-top:1px solid var(--line);text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
 td:first-child{font-family:var(--sans);font-weight:600}
 td.var{font-weight:500}
-.chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11.5px;padding:3px 9px;border-radius:999px;background:var(--surface2);color:var(--muted);transition:all .3s;white-space:nowrap}
+.chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11.5px;padding:3px 9px;border-radius:999px;background:var(--surface2);color:var(--muted);transition:background-color .2s,color .2s,transform .2s var(--ease-out);white-space:nowrap}
 tr.bad .chip{background:var(--warn-soft);color:var(--warn)}
 tr.bad td.var{color:var(--warn)}
 tr.fixed .chip,tr.total.ok .chip{background:var(--ok-soft);color:var(--ok)}
@@ -200,10 +200,10 @@ tr.total td{background:var(--surface2);font-weight:600}
 .bar .t{font-size:14px;grid-column:1/-1}
 .track{position:relative;height:10px;border-radius:99px;background:var(--surface2);overflow:hidden}
 .track::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,transparent 0 calc(25% - 1.5px),color-mix(in srgb,var(--bg) 70%,transparent) calc(25% - 1.5px) 25%)}
-.fill{height:100%;border-radius:99px;background:var(--accent);width:var(--w);transform-origin:left;animation:grow .9s cubic-bezier(.2,.7,.2,1) both}
+.fill{height:100%;border-radius:99px;background:var(--accent);width:var(--w);transform-origin:left;animation:grow .6s var(--ease-out) both}
 .fill.alt{background:var(--ok)}
 .bar .v{font-family:var(--mono);font-size:13px;text-align:right;font-weight:500}
-@keyframes grow{from{transform:scaleX(0)}}
+@keyframes grow{from{transform:scaleX(.04);opacity:.4}}
 
 /* projects */
 .proj{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
@@ -261,7 +261,7 @@ footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-
 .contact{background:radial-gradient(380px circle at var(--mx,-400px) var(--my,-400px),rgba(255,255,255,.07),transparent 70%),radial-gradient(ellipse 60% 90% at 100% 0%,rgba(255,255,255,.24),transparent 62%),var(--accent)}
 .nav{position:relative}
 .nav .mk,.nav a,.nav .tg{position:relative;z-index:1}
-.nav .ind{position:absolute;left:0;top:5px;height:0;width:0;border-radius:999px;background:var(--ink);z-index:0;pointer-events:none;opacity:0;transition:transform .38s cubic-bezier(.3,.7,.2,1),width .38s cubic-bezier(.3,.7,.2,1),opacity .2s}
+.nav .ind{position:absolute;left:0;top:5px;height:0;width:0;border-radius:999px;background:var(--ink);z-index:0;pointer-events:none;opacity:0;transition:transform .28s var(--spring),width .28s var(--spring),opacity .2s}
 .nav .ind.ready{opacity:1}
 html.js .nav a.on{background:transparent}
 .nav a{transition:color .25s}
@@ -269,31 +269,31 @@ html.js .nav a.on{background:transparent}
 .pill:hover small{transform:translate(2px,-2px)}
 .pill.main:hover small{transform:translateY(2px)}
 .pill:active,.btn:active,.run:active,.mail button:active,.mail a:active,.tab:active{transform:scale(.98)}
-.proj .plogo{transition:transform .35s cubic-bezier(.3,.7,.2,1)}
+.proj .plogo{transition:transform .25s var(--ease-out)}
 .proj .card:hover .plogo{transform:scale(1.06) rotate(-3deg)}
 #rows tr:not(.total) td{transition:background-color .2s}
 #rows tr:not(.total):hover td{background:color-mix(in srgb,var(--accent) 5%,transparent)}
-.panel:not([hidden]){animation:panelIn .4s cubic-bezier(.2,.7,.2,1)}
+.panel:not([hidden]){animation:panelIn .24s var(--ease-out)}
 @keyframes panelIn{from{opacity:0;transform:translateY(8px)}}
-.hero::after{transform:translate3d(var(--hx,0px),var(--hy,0px),0);transition:transform .7s ease-out}
+.hero::after{transform:translate3d(var(--hx,0px),var(--hy,0px),0);transition:transform .5s var(--ease-out)}
 @keyframes up{from{opacity:0;transform:translateY(14px)}}
-html.js .hero .status,html.js .hero h1,html.js .hero .lede,html.js .hero .links .pill{animation:up .75s cubic-bezier(.2,.7,.2,1) both}
+html.js .hero .status,html.js .hero h1,html.js .hero .lede,html.js .hero .links .pill{animation:up .6s var(--ease-out) both}
 html.js .hero h1{animation-delay:.08s}html.js .hero .lede{animation-delay:.16s}
 html.js .hero .links .pill:nth-child(1){animation-delay:.2s}html.js .hero .links .pill:nth-child(2){animation-delay:.26s}html.js .hero .links .pill:nth-child(3){animation-delay:.32s}html.js .hero .links .pill:nth-child(4){animation-delay:.38s}
-html.js .rv{opacity:0;transform:translateY(16px);transition:opacity .65s cubic-bezier(.2,.7,.2,1) var(--d,0s),transform .65s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+html.js .rv{opacity:0;transform:translateY(16px);transition:opacity .5s var(--ease-out) var(--d,0s),transform .5s var(--ease-out) var(--d,0s)}
 html.js .rv.in{opacity:1;transform:none}
-html.js .sec-h.rv h2::before{width:0;transition:width .7s cubic-bezier(.2,.7,.2,1) .25s}
-html.js .sec-h.rv.in h2::before{width:28px}
+html.js .sec-h.rv h2::before{transform:scaleX(0.05);transform-origin:left;transition:transform .45s var(--ease-out) .2s}
+html.js .sec-h.rv.in h2::before{transform:none}
 html.js .rv .chips span{opacity:0;transform:translateY(6px)}
-html.js .rv.in .chips span{opacity:1;transform:none;transition:opacity .45s,transform .45s;transition-delay:calc(var(--i,0)*28ms + .15s)}
+html.js .rv.in .chips span{opacity:1;transform:none;transition:opacity .3s var(--ease-out),transform .3s var(--ease-out);transition-delay:calc(var(--i,0)*28ms + .15s)}
 html.js .fill{animation-play-state:paused}
 html.js [data-in] .fill{animation-play-state:running}
 @media(prefers-reduced-motion:no-preference){html.tt,html.tt *,html.tt *::before,html.tt *::after{transition:background-color .25s ease,color .25s ease,border-color .25s ease,box-shadow .25s ease!important}::view-transition-old(root),::view-transition-new(root){animation-duration:.3s;animation-timing-function:cubic-bezier(.4,0,.2,1)}}
-dialog.pd[open]{animation:dlgIn .34s cubic-bezier(.2,.7,.2,1)}
-dialog.pd[open]::backdrop{animation:bdIn .34s ease-out}
-dialog.pd.out{animation:dlgOut .22s ease-in forwards}
-dialog.pd.out::backdrop{animation:bdOut .22s ease-in forwards}
-@keyframes dlgIn{from{opacity:0;transform:translateY(16px) scale(.98)}}
+dialog.pd[open]{animation:dlgIn .28s var(--ease-out)}
+dialog.pd[open]::backdrop{animation:bdIn .28s var(--ease-out)}
+dialog.pd.out{animation:dlgOut .18s var(--ease-out) forwards}
+dialog.pd.out::backdrop{animation:bdOut .18s var(--ease-out) forwards}
+@keyframes dlgIn{from{opacity:0;transform:translateY(12px) scale(.97)}}
 @keyframes dlgOut{to{opacity:0;transform:translateY(10px) scale(.985)}}
 @keyframes bdIn{from{opacity:0}}
 @keyframes bdOut{to{opacity:0}}
@@ -307,7 +307,7 @@ dialog.pd.out::backdrop{animation:bdOut .22s ease-in forwards}
 a,button,.card.click{-webkit-tap-highlight-color:transparent}
 button,.tab,.pill,.btn,.run{touch-action:manipulation}
 @media(max-width:640px){.nav{-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:opacity .15s ease,color .15s ease,background-color .15s ease,border-color .15s ease!important}html{scroll-behavior:auto}html.js .rv{transform:none!important}}
 [hidden]{display:none!important}
 img{max-width:100%}
 
@@ -389,7 +389,7 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
 .cl-line{stroke-dasharray:1;animation:clDraw 5s ease-in-out infinite}
 @keyframes clDraw{0%{stroke-dashoffset:1;opacity:1}38%,90%{stroke-dashoffset:0;opacity:1}98%,100%{stroke-dashoffset:0;opacity:0}}
 .cl-dot{transform-box:fill-box;transform-origin:center;animation:clDot 5s ease-in-out infinite}
-@keyframes clDot{0%,35%{transform:scale(0);opacity:0}41%{transform:scale(1.7);opacity:1}48%,90%{transform:scale(1);opacity:1}98%,100%{transform:scale(1);opacity:0}}
+@keyframes clDot{0%,35%{transform:scale(.6);opacity:0}41%{transform:scale(1.7);opacity:1}48%,90%{transform:scale(1);opacity:1}98%,100%{transform:scale(1);opacity:0}}
 .sl-bat{transform-box:view-box;transform-origin:24px 20px;transform:rotate(-30deg);animation:slBat 2s infinite}
 @keyframes slBat{0%{transform:rotate(90deg);animation-timing-function:linear}13.2%{transform:rotate(-30deg);animation-timing-function:linear}22%{transform:rotate(-110deg);animation-timing-function:ease-in-out}100%{transform:rotate(90deg)}}
 .sl-ball{transform-box:fill-box;transform-origin:center;animation:slBall 2s infinite}
@@ -398,7 +398,7 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
 
 /* every surface reacts to the pointer in the same quiet way */
 @media (hover:hover) and (prefers-reduced-motion:no-preference){
-  .card,.tbl,.contact,.stat{transition:border-color .25s,transform .25s cubic-bezier(.3,.7,.2,1),box-shadow .25s,background-color .25s}
+  .card,.tbl,.contact,.stat{transition:border-color .25s,transform .25s var(--ease-out),box-shadow .25s,background-color .25s}
   .card:hover,.stat:hover{border-color:color-mix(in srgb,var(--accent) 40%,var(--line));transform:translateY(-2px)}
   .tbl:hover{border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
   .contact:hover{transform:translateY(-2px)}
@@ -408,10 +408,10 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
 @media (hover:hover) and (prefers-reduced-motion:no-preference){
   h1,h2,h3,h4,h5,h6{transition:color .25s ease}
   h1:hover,h2:hover,h3:hover,h4:hover,h5:hover,h6:hover{color:color-mix(in srgb,var(--ink) 82%,var(--accent))}
-  .chip,.tag,.badge,.eyebrow,.label,.k{transition:transform .2s cubic-bezier(.3,.7,.2,1),border-color .2s,color .2s,background-color .2s}
+  .chip,.tag,.badge,.eyebrow,.label,.k{transition:transform .2s var(--ease-out),border-color .2s,color .2s,background-color .2s}
   .chip:hover,.tag:hover,.badge:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
   .eyebrow:hover,.label:hover,.k:hover{color:var(--ink)}
-  img,.lg,.plogo,.tkimg,.eduimg{transition:transform .3s cubic-bezier(.3,.7,.2,1),filter .3s}
+  img,.lg,.plogo,.tkimg,.eduimg{transition:transform .3s var(--ease-out),filter .3s}
   img:hover{transform:scale(1.035)}
   p a,li a,dd a,.note a,.lead a{text-decoration-color:color-mix(in srgb,var(--accent) 0%,transparent);text-underline-offset:3px;transition:color .2s,text-decoration-color .2s}
   p a:hover,li a:hover,dd a:hover,.note a:hover,.lead a:hover{color:var(--accent);text-decoration-color:var(--accent)}
@@ -444,6 +444,24 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
 .lrun canvas.ptr:focus-visible{box-shadow:none}
 .lr-k{margin:8px 2px 0;font-family:var(--mono);font-size:11px;color:var(--muted)}
 
+
+/* craft layer: Apple + Emil motion pass */
+:root{--ease-out:cubic-bezier(.23,1,.32,1);--ease-in-out:cubic-bezier(.77,0,.175,1);--ease-drawer:cubic-bezier(.32,.72,0,1);
+--spring:linear(0,0.069,0.211,0.367,0.509,0.629,0.725,0.799,0.855,0.896,0.926,0.948,0.964,0.975,0.982,0.988,0.992,0.994,0.996,0.997,0.998,0.999,1)}
+html{font-optical-sizing:auto;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1{letter-spacing:-.035em}h2{letter-spacing:-.025em}h3{letter-spacing:-.015em}
+.nav{backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);transition:box-shadow .25s var(--ease-out),border-color .25s var(--ease-out)}
+.nav.edge{box-shadow:0 1px 0 color-mix(in srgb,var(--ink) 6%,transparent),0 10px 30px -14px color-mix(in srgb,var(--ink) 30%,transparent)}
+.pill,.run,.btn,.tab,.totop,.tg,.pd-x,.nav a,.chips span{-webkit-tap-highlight-color:transparent}
+.pill,.run,.btn,.totop,.tg,.pd-x{transition-property:transform,border-color,background-color,color,box-shadow;transition-duration:.16s;transition-timing-function:var(--ease-out)}
+.pill:active,.run:active,.btn:active,.totop:active,.tg:active,.pd-x:active,.tab:active,.nav a:active{transform:scale(.97);transition-duration:.1s}
+@media (hover:none),(pointer:coarse){
+ .pill:hover,.run:hover,.btn:hover,.totop:hover,.chips span:hover,.stat:hover,.proj .card:hover,.rec .card:hover,.edu .card:hover,.stackgrid .card:hover,.card:hover,.tbl:hover,.contact:hover{transform:none}
+ .pill:hover small,.pill.main:hover small,.proj .card:hover .plogo{transform:none}
+ .pill:active,.run:active,.btn:active,.totop:active{transform:scale(.97)}
+}
+@media (prefers-reduced-transparency:reduce){.nav,.totop{background:var(--surface);backdrop-filter:none;-webkit-backdrop-filter:none}dialog.pd::backdrop{backdrop-filter:none}}
+@media (prefers-contrast:more){:root{--line:color-mix(in srgb,var(--ink) 45%,transparent)}.nav,.card,.pill{border-color:var(--ink)}}
 </style>
 </head>
 <body>
@@ -834,7 +852,7 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
   }
   var pg=document.getElementById('prog');
   function prog(){var h=document.documentElement.scrollHeight-innerHeight;pg.style.transform='scaleX('+(h>0?Math.min(1,scrollY/h):0)+')'}
-  addEventListener('scroll',function(){spy();prog()},{passive:true});addEventListener('resize',prog);spy();prog();
+  var nv=document.querySelector('.nav');function edge(){if(nv)nv.classList.toggle('edge',scrollY>8)}addEventListener('scroll',function(){spy();prog();edge()},{passive:true});edge();addEventListener('resize',prog);spy();prog();
 })();
 </script>
 <script>
@@ -848,7 +866,7 @@ dialog.pd::backdrop{background:rgba(20,12,6,.55);backdrop-filter:blur(3px)}
     });
   });
   ds.forEach(function(d){
-    function shut(){if(!d.open||d.classList.contains('out'))return;if(matchMedia('(prefers-reduced-motion: reduce)').matches){d.close();return}d.classList.add('out');setTimeout(function(){d.classList.remove('out');d.close()},220)}
+    function shut(){if(!d.open||d.classList.contains('out'))return;if(matchMedia('(prefers-reduced-motion: reduce)').matches){d.close();return}d.classList.add('out');setTimeout(function(){d.classList.remove('out');d.close()},180)}
     d.addEventListener('click',function(e){if(e.target===d||e.target.closest('[data-close]'))shut()});
     d.addEventListener('cancel',function(e){e.preventDefault();shut()});
   });
