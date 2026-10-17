@@ -227,7 +227,7 @@ tr.total td{background:var(--surface2);font-weight:600}
 
 /* recognition */
 .rec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.rec .card h4{font-weight:800;font-size:21px;letter-spacing:-.02em;line-height:1.15}
+.rec .card h4{font-weight:800;font-size:clamp(18px,1.9vw,21px);letter-spacing:-.02em;line-height:1.15;text-wrap:balance}
 .rec .card .org{font-family:var(--mono);font-size:12px;color:var(--accent);margin:8px 0 12px}
 .rec .card p{color:var(--muted);font-size:14.5px}
 .edu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
@@ -786,7 +786,7 @@ h1{letter-spacing:-.035em}h2{letter-spacing:-.025em}h3{letter-spacing:-.015em}
     <div class="rec">
       <div class="card"><h4>Props Award</h4><div class="org">PAYPAL</div><p>Recognized for architecting the config-driven payment system behind the Payments Platform.</p></div>
       <div class="card"><h4>Spot Award</h4><div class="org">PAYPAL</div><p>Spearheaded delivery of critical business initiatives that drove significant revenue growth.</p></div>
-      <div class="card"><h4>Hackathon runner-up</h4><div class="org">PAYPAL</div><p>Designed a log-analysis tool that groups, analyzes and triages call logs and failures to speed up root-cause investigation.</p></div>
+      <div class="card"><h4>Hackathon runner&#8209;up</h4><div class="org">PAYPAL</div><p>Designed a log-analysis tool that groups, analyzes and triages call logs and failures to speed up root-cause investigation.</p></div>
     </div>
     <div class="edu">
       <div class="card"><div class="chrome" aria-hidden="true"><i></i><i></i><i></i></div><img loading="lazy" decoding="async" class="eduimg" src="logos/bits.png" alt="BITS Pilani"><h4>B.E. (Hons.) Electrical &amp; Electronics Engineering</h4><p>BITS Pilani, Hyderabad Campus</p><div class="yr">2018 – 2022</div></div>
