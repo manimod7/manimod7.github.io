@@ -20,7 +20,7 @@ Personal portfolio of Manish Modwani, Software Development Engineer II at Amazon
 | Impact | What I delivered at Amazon and at PayPal |
 | Projects | Chase and SwingLab, with a details panel and live demo links |
 | Stack | Languages, data engineering, cloud and tools |
-| Recognition | Awards, including Top Performer at Amazon (2026) |
+| Recognition | Awards from PayPal, and education |
 | Contact | Email, LinkedIn, GitHub, resume |
 
 The **reconciliation demo** shows how a variance between Amazon's books and a partner's report is found and closed with an adjustment booking. It uses deliberately simple round numbers so the arithmetic is easy to check: books 1,000 units / 10,000.00 gross / 1,000.00 commission against a partner report of 990 / 9,900.00 / 990.00, so the variances are -10 units, -100.00 gross and -10.00 commission, and net to book is 9,000.00 against 8,910.00, a variance of 90.00 EUR. The figures are illustrative, not real data.
